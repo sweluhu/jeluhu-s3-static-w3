@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NFT COLLECTION ₿</title>
+    <style>
+      body {
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+        font-family: "Menlo", "Monaco", "Consolas", "Courier New", monospace;
+        background-color: #000000;
+        text-align: center;
+        color: #00ff00;
+        margin: 0;
+        padding: 0;
+      }
+      header, main, footer {
+        padding: 1rem;
+      }
+      header {
+        background-color: #0d0d0d;
+      }
+      nav ul {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+      }
+      nav li {
+        display: inline-block;
+      }
+      nav li + li::before {
+        content: "|";
+        margin: 0 0.5em;
+      }
+      a {
+        color: #39ff14; /* Neon Green */
+        text-decoration: none;
+      }
+      a:hover {
+        text-decoration: underline;
+      }
+      img {
+        max-width: 50%;
+        vertical-align: middle;
+        border-radius: 8px;
+        margin-top: 1rem;
+      }
+      footer {
+        background-color: #0d0d0d;
+        color: white;
+        margin-top: 2rem;
+      }
+      /* New styles for profile section */
+      .profile-container {
+        max-width: 800px;
+        margin: 0 auto;
+        padding: 1rem;
+      }
+      .professional-card {
+        background: rgba(255, 255, 255, 0.05);
+        border: 1px solid #333;
+        border-radius: 16px;
+        padding: 2rem;
+        margin: 2rem 0;
+        box-shadow: 0 4px 20px rgba(0,0,0,0.5);
+        transition: transform 0.3s ease;
+      }
+      .professional-card:hover {
+        transform: translateY(-5px);
+        border-color: #39ff14;
+      }
+      .cta-button {
+        display: inline-block;
+        background-color: transparent;
+        color: #39ff14;
+        border: 2px solid #39ff14;
+        padding: 0.8rem 2rem;
+        border-radius: 50px;
+        font-weight: bold;
+        margin-top: 1.5rem;
+        transition: all 0.3s ease;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+      }
+      .cta-button:hover {
+        background-color: #39ff14;
+        color: #000;
+        text-decoration: none;
+        box-shadow: 0 0 20px rgba(57, 255, 20, 0.4);
+      }
+    </style>
+  </head>
+  <body>
+    <header>
+      <nav>
+        <ul>
+          <li><a href="/">home 🏠</a></li>
+          <li><a href="/emobility.html">e-mobility ⚡️</a></li>
+          <li><a href="/fambam.html">fam 🧑‍🧑‍🧒‍🧒 bam</a></li>
+          <li><a href="/random.html">random 🖼️ image</a></li>
+          <li><a href="#" onclick="if(confirm('🚨 Redirecting to LinkedIn. Do you want to proceed? 🚨')) { window.open('https://www.linkedin.com/in/sweluhu/', '_blank'); }">linkedIn 🖇️</a></li>
+          <li><a href="#" onclick="window.open('resume.html', '_blank'); return false;">resume 📄</a></li>
+          <li><a href="#" onclick="if(confirm('🚨 Opening your default email client. Do you want to proceed? 🚨')) { window.location.href='mailto:jeluhu@gmail.com'; } return false;">contact ✉️</a></li>
+        </ul>
+      </nav>
+    </header>
+    <main>
+      <div class="profile-container">
+        <!-- <h2 style="font-size: 2.5rem; margin-bottom: 0.5rem;">NFT Collection</h2> -->
+        <h2> NFT COLLECTION 🪙 ₿ ️</h2>
+        <p style="color: #888; margin-bottom: 2rem;">Digital Assets</p>
+        
+        <div class="professional-card">
+          <!-- <h2 style="color: #fff; margin-bottom: 1rem;">My Gallery</h2> -->
+          <p style="max-width: 600px; margin: 0 auto; line-height: 1.6;">
+             Explore my NFT Gallery.
+          </p>
+          <iframe src="https://opensea.io/gallery/0x82ab730e819f81b9044dd0f9a6383579fd91b95e/42e17da775bf444e8c8db56f598a6bf9?embed=true" 
+                  width="100%" 
+                  height="600px" 
+                  frameborder="0" 
+                  allowfullscreen
+                  style="border-radius: 12px; margin-top: 1rem; background-color: #1a1a1a;">
+          </iframe>
+          <a href="https://opensea.io/gallery/0x82ab730e819f81b9044dd0f9a6383579fd91b95e/42e17da775bf444e8c8db56f598a6bf9" target="_blank" class="cta-button">View on OpenSea</a>
+        </div>
+      </div>
+    </main>
+    <footer>
+      <tiny>Human-made in Chicago ❤️</tiny>
+    </footer>
+  </body>
+</html>

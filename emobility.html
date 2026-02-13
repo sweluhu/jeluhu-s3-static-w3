@@ -1,0 +1,627 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>E-MOBILITY 🏍️⚡️</title>
+    <style>
+      body {
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+        background-color: #000000;
+        text-align: center;
+        color: #00ff00;
+        margin: 0;
+        padding: 0;
+      }
+      header, main, footer {
+        padding: 1rem;
+      }
+      header {
+        background-color: #0d0d0d;
+      }
+      nav ul {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+      }
+      nav li {
+        display: inline-block;
+      }
+      nav li + li::before {
+        content: "|";
+        margin: 0 0.5em;
+      }
+      a {
+        color: #39ff14; /* Neon Green */
+        text-decoration: none;
+      }
+      a:hover {
+        text-decoration: underline;
+      }
+      .mosaic {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+        gap: 10px;
+        margin-top: 1rem;
+      }
+      .mosaic img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        border-radius: 8px;
+        cursor: pointer;
+      }
+
+      /* default video styles overridden by .thumbnail-video */
+      video {
+        width: 100%;
+        max-width: 100%;
+        border-radius: 8px;
+        margin-top: 2rem;
+      }
+
+      /* Thumbnail style for the small video */
+      .thumbnail-video {
+        width: 320px;            /* thumbnail width */
+        max-width: 40%;
+        height: auto;
+        display: inline-block;
+        border-radius: 8px;
+        margin-top: 0.5rem;
+        margin-left: auto;
+        margin-right: auto;
+        object-fit: cover;
+      }
+
+      footer {
+        background-color: #0d0d0d;
+        color: white;
+        margin-top: 2rem;
+      }
+
+      /* Styles for the vehicle titles section */
+      .titles {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 1rem;
+        margin: 2rem auto;
+        padding: 0 1rem;
+      }
+      .titles h4 {
+        margin: 0;
+        font-weight: normal;
+      }
+      .titles a {
+        display: inline-block;
+        padding: 0.8rem 1.5rem;
+        border: 1px solid #39ff14;
+        border-radius: 50px;
+        background: rgba(57, 255, 20, 0.05);
+        transition: all 0.3s ease;
+        font-weight: 500;
+      }
+      .titles a:hover {
+        background: #39ff14;
+        color: #000;
+        box-shadow: 0 0 20px rgba(57, 255, 20, 0.4);
+        transform: translateY(-2px);
+        text-decoration: none;
+      }
+    </style>
+  </head>
+  <body>
+    <header>
+      <nav>
+        <ul>
+          <li><a href="/">home 🏠</a></li>
+          <li><a href="/fambam.html">fam 🧑‍🧑‍🧒‍🧒 bam</a></li>
+          <li><a href="/random.html">random 🖼️ image</a></li>
+          <li><a href="/nft.html">nft 🪙 ₿</a></li>
+          <li><a href="#" onclick="if(confirm('🚨 Redirecting to LinkedIn. Do you want to proceed? 🚨')) { window.open('https://www.linkedin.com/in/sweluhu/', '_blank'); }">linkedIn 🖇️</a></li>
+          <li><a href="#" onclick="window.open('resume.html', '_blank'); return false;">resume 📄</a></li>
+          <li><a href="#" onclick="if(confirm('🚨 Opening your default email client. Do you want to proceed? 🚨')) { window.location.href='mailto:jeluhu@gmail.com'; } return false;">contact ✉️</a></li>
+        </ul>
+      </nav>
+    </header>
+    <main>
+      <div class="titles">
+        <h4><a href="https://www.edmunds.com/bmw/i3/2017/review/">2017 BMW i3 Rex Terra</a></h4>
+        <h4><a href="https://www.onyxmotorbikes.com/">2020 Onyx RCR 🏍️</a></h4>
+        <h4><a href="https://cowboy.com/products/e-bike-cowboy-classic">2021 Cowboy C4 - US version</a></h4>
+        <h4><a href="https://www.bmw-motorrad.fr/fr/modeles/urban_mobility/ce04.html"> 2024 BMW CE-04 | A2 version</a></h4>
+        <h4><a href="https://ridecake.com/en-FR/p/makka"> 2024 Cake MakkA </a></h4>
+        <h4><a href="https://www.tesla.com/modely"> 2025 Tesla Model Y | Long Range</a></h4>
+      </div>
+      <div style="margin-bottom: 2rem;">
+        <a style="color:white; text-decoration: none; opacity: 0.8; font-size: 0.9rem;" href="#Electric Vehicle Videos">⏬ Jump to Videos ⏬</a>
+      </div>
+      <div class="mosaic" id="mosaic"></div>
+      <style>
+        .thumbnail-video {
+          width: 100%;
+          max-width: none;
+          height: 100%;
+          aspect-ratio: 4/3;
+          display: block;
+          border-radius: 8px;
+          margin: 0;
+          object-fit: cover;
+          transition: box-shadow 0.2s;
+          box-shadow: 0 0 0 transparent;
+        }
+        .thumbnail-video:hover {
+          box-shadow: 0 0 16px #39ff14;
+        }
+      </style>
+      <script>
+        document.addEventListener('mouseover', function (e) {
+          if (e.target.classList.contains('thumbnail-video')) {
+            e.target.play();
+          }
+        });
+        document.addEventListener('mouseout', function (e) {
+          if (e.target.classList.contains('thumbnail-video')) {
+            e.target.pause();
+            e.target.currentTime = 0;
+          }
+        });
+      </script>
+      <div id="movies" aria-live="polite">
+        <div id="Electric Vehicle Videos">
+            <h2>Electric Vehicle Videos</h2>
+        </div>
+      </div>
+      <style>
+        /* Remove fixed aspect ratio for .thumbnail-video */
+        .thumbnail-video {
+          width: 100%;
+          max-width: none;
+          height: auto;
+          display: block;
+          border-radius: 8px;
+          margin: 0;
+          object-fit: contain;
+          transition: box-shadow 0.2s;
+          box-shadow: 0 0 0 transparent;
+          aspect-ratio: unset; /* Remove aspect ratio constraint */
+        }
+        .thumbnail-video:hover {
+          box-shadow: 0 0 16px #39ff14;
+        }
+      </style>
+      <script>
+        // Remove aspectRatio style, let video use its natural size
+        function addVideo(url) {
+          const container = document.getElementById('movies');
+
+          const wrapper = document.createElement('div');
+          wrapper.style.display = 'inline-block';
+          wrapper.style.margin = '0.5rem';
+          wrapper.style.width = '320px';
+          wrapper.style.maxWidth = '45%';
+          wrapper.style.verticalAlign = 'top';
+
+          const video = document.createElement('video');
+          video.className = 'thumbnail-video';
+          video.controls = true;
+          video.preload = 'metadata';
+          video.src = url;
+          video.setAttribute('aria-label', decodeURIComponent(url.split('/').pop()));
+
+          video.muted = true;
+          video.loop = true;
+          video.playsInline = true;
+
+          video.style.width = '100%';
+          video.style.height = 'auto';
+          video.style.objectFit = 'contain';
+          // Remove aspectRatio style
+
+          wrapper.appendChild(video);
+          container.appendChild(wrapper);
+        }
+      </script>
+      <script>
+        (function () {
+          const S3_BASE = 'https://s3.amazonaws.com/junioreluhu.com/';
+          const MOVIES_PREFIX = 'emobility/movies/';
+          const LIST_URL = `${S3_BASE.replace(/\/$/, '')}?list-type=2&prefix=${MOVIES_PREFIX}`;
+
+          function parseS3ListXml(xmlString) {
+        const parser = new DOMParser();
+        const xml = parser.parseFromString(xmlString, 'application/xml');
+        const contents = Array.from(xml.getElementsByTagName('Contents'));
+        return contents
+          .map(c => {
+            const keyEl = c.getElementsByTagName('Key')[0];
+            return keyEl ? keyEl.textContent : null;
+          })
+          .filter(Boolean);
+          }
+
+          function isVideoKey(key) {
+        return /\.(mp4|mov|webm|m4v)$/i.test(key);
+          }
+
+          function addVideo(url) {
+        const container = document.getElementById('movies');
+
+        const wrapper = document.createElement('div');
+        // constrain thumbnail size while keeping aspect ratio and allowing responsiveness
+        wrapper.style.display = 'inline-block';
+        wrapper.style.margin = '0.5rem';
+        // wrapper.style.width = '640px';      // desired thumbnail width
+        wrapper.style.maxWidth = '20%';     // responsive cap
+        wrapper.style.verticalAlign = 'top';
+
+        const video = document.createElement('video');
+        video.className = 'thumbnail-video';
+        video.controls = true;
+        video.preload = 'metadata';
+        video.src = url;
+        video.setAttribute('aria-label', decodeURIComponent(url.split('/').pop()));
+
+        // autoplay on hover requires muted in many browsers
+        video.muted = true;
+        video.loop = true;
+        video.playsInline = true;
+
+        // // enforce a consistent aspect ratio and fit
+        // video.style.width = '50%';
+        video.style.height = 'auto';
+        // video.style.objectFit = 'cover';
+        // prefer 16:9 for videos; adjust if you want 4/3
+        // If video in landscape, use 16:9; if portrait, use 4:3
+        // if (video.videoWidth >= video.videoHeight) {
+        //   video.style.aspectRatio = '16/9';
+        // } 
+        // video.style.aspectRatio = '16/9';
+
+        wrapper.appendChild(video);
+        container.appendChild(wrapper);
+          }
+
+          fetch(LIST_URL)
+        .then(res => {
+          if (!res.ok) throw new Error('Failed to fetch S3 listing: ' + res.status);
+          return res.text();
+        })
+        .then(text => {
+          const keys = parseS3ListXml(text)
+            .filter(k => k !== MOVIES_PREFIX)
+            .filter(isVideoKey);
+
+          if (keys.length === 0) throw new Error('No video keys found in S3 listing');
+
+          keys.forEach(k => addVideo(encodeURI(S3_BASE + k)));
+        })
+        .catch(err => {
+          console.warn('Movies listing failed, falling back to static list. Error:', err);
+          const fallback = [
+            'emobility/movies/onyxes.mp4',
+            'emobility/movies/onyx-speed-test-nc.mp4',
+            'emobility/movies/onyx-reid-front.mov',
+            'emobility/movies/bmw-ce04-showroom.mov',
+            'emobility/movies/onyx-360-nc.mov',
+            'emobility/movies/onyx-camping-can-il.mov',
+            'emobility/movies/onyx-pond-nc.mov',
+            'emobility/movies/onyx-reid-back.mov',
+            'emobility/movies/onyx-screen-test.mov',
+            'emobility/movies/tesla-camping-pyrenee.mov', 
+            'emobility/movies/pau-emobility.mov',
+            'emobility/movies/bmw-ce04-riding-cold.mov',
+            
+          ].map(k => encodeURI(S3_BASE + k));
+          fallback.forEach(url => addVideo(url));
+        });
+        })();
+      </script>
+      <!-- // Jump to top | title in light blue-->
+      </h6><a style="color:white;" href="#top">🔝 top 🔝</a></h6>
+    </main>
+    <footer>
+      <tiny>Human🤝🏾Gemini<br>❤️ Made in Pau 🇫🇷</tiny>
+    </footer>
+
+    <script>
+      (() => {
+        // TO-DO: Implement a function to securly pull AWS credentials from SSM Parameter Store. 
+        // Access Key and Secret Key should not be hardcoded and exposed in client-side code.
+        // IAM user with least privilege should be created for this purpose.
+
+        const S3_BASE = 'https://s3.amazonaws.com/junioreluhu.com/';
+        const PREFIX = 'emobility/';
+        const LIST_URL = `${S3_BASE.replace(/\/$/, '')}?list-type=2&prefix=${PREFIX}`;
+        
+
+        // Fisher-Yates shuffle to randomize order
+        function shuffle(array) {
+          for (let i = array.length - 1; i > 0; i--) {
+            const j = Math.floor(Math.random() * (i + 1));
+            [array[i], array[j]] = [array[j], array[i]];
+          }
+          return array;
+        }
+
+        const mosaic = document.getElementById('mosaic');
+        if (!mosaic) {
+          console.warn('No element with id="mosaic" found.');
+          return;
+        }
+
+        mosaic.style.display = 'grid';
+        mosaic.style.gridTemplateColumns = 'repeat(auto-fill, minmax(300px, 1fr))';
+        mosaic.style.gridAutoFlow = 'dense';
+        mosaic.style.gap = '10px';
+        mosaic.style.marginTop = '1rem';
+
+        // Lightbox state
+        let galleryImages = [];
+        let currentImageIndex = 0;
+
+        // simple modal/lightbox for mosaic images (defined early so addImage can use openLightbox)
+        const modal = document.createElement('div');
+        modal.style.cssText = `
+          display: none;
+          position: fixed;
+          z-index: 1000;
+          left: 0;
+          top: 0;
+          width: 100%;
+          height: 100%;
+          background-color: rgba(0, 0, 0, 0.9);
+        `;
+
+        const modalImg = document.createElement('img');
+        modalImg.style.cssText = `
+          margin: auto;
+          display: block;
+          max-width: 90%;
+          max-height: 90%;
+          position: absolute;
+          top: 50%;
+          left: 50%;
+          transform: translate(-50%, -50%);
+        `;
+
+        // Navigation buttons
+        const prevBtn = document.createElement('a');
+        prevBtn.innerHTML = '&#10094;';
+        prevBtn.style.cssText = `
+            cursor: pointer;
+            position: absolute;
+            top: 50%;
+            width: auto;
+            padding: 16px;
+            margin-top: -50px;
+            color: white;
+            font-weight: bold;
+            font-size: 20px;
+            transition: 0.6s ease;
+            border-radius: 0 3px 3px 0;
+            user-select: none;
+            -webkit-user-select: none;
+            left: 0;
+            text-decoration: none;
+            background-color: rgba(0,0,0,0.5);
+        `;
+
+        const nextBtn = document.createElement('a');
+        nextBtn.innerHTML = '&#10095;';
+        nextBtn.style.cssText = `
+            cursor: pointer;
+            position: absolute;
+            top: 50%;
+            width: auto;
+            padding: 16px;
+            margin-top: -50px;
+            color: white;
+            font-weight: bold;
+            font-size: 20px;
+            transition: 0.6s ease;
+            border-radius: 3px 0 0 3px;
+            user-select: none;
+            -webkit-user-select: none;
+            right: 0;
+            text-decoration: none;
+            background-color: rgba(0,0,0,0.5);
+        `;
+
+        modal.appendChild(modalImg);
+        modal.appendChild(prevBtn);
+        modal.appendChild(nextBtn);
+        document.body.appendChild(modal);
+
+        function showImage(index) {
+          if (index >= galleryImages.length) index = 0;
+          if (index < 0) index = galleryImages.length - 1;
+          currentImageIndex = index;
+          modalImg.src = galleryImages[index];
+        }
+
+        function openLightbox(index) {
+          showImage(index);
+          modal.style.display = 'block';
+        }
+
+        modal.addEventListener('click', (e) => {
+          if (e.target === modal || e.target === modalImg) {
+            modal.style.display = 'none';
+            modalImg.src = '';
+          }
+        });
+
+        prevBtn.addEventListener('click', (e) => {
+          e.stopPropagation();
+          showImage(currentImageIndex - 1);
+        });
+
+        nextBtn.addEventListener('click', (e) => {
+          e.stopPropagation();
+          showImage(currentImageIndex + 1);
+        });
+
+        // Keyboard navigation
+        document.addEventListener('keydown', (e) => {
+          if (modal.style.display === 'block') {
+            if (e.key === 'Escape') {
+              modal.style.display = 'none';
+              modalImg.src = '';
+            } else if (e.key === 'ArrowLeft') {
+              showImage(currentImageIndex - 1);
+            } else if (e.key === 'ArrowRight') {
+              showImage(currentImageIndex + 1);
+            }
+          }
+        });
+
+        function parseS3ListXml(xmlString) {
+          const parser = new DOMParser();
+          const xml = parser.parseFromString(xmlString, 'application/xml');
+          const contents = Array.from(xml.getElementsByTagName('Contents'));
+          return contents.map(c => {
+            const keyEl = c.getElementsByTagName('Key')[0];
+            return keyEl ? keyEl.textContent : null;
+          }).filter(Boolean);
+        }
+
+        function isImageKey(key) {
+          return /\.(jpe?g|png|gif|webp|bmp|svg|heic|raw)$/i.test(key);
+        }
+
+        async function loadImages() {
+          try {
+            const res = await fetch(LIST_URL);
+            if (!res.ok) throw new Error('Failed to fetch S3 listing: ' + res.status);
+            const text = await res.text();
+            const keys = parseS3ListXml(text)
+              .filter(k => k !== PREFIX)
+              .filter(isImageKey);
+
+            if (keys.length === 0) throw new Error('No image keys found in S3 listing');
+
+            const urls = keys.map(k => encodeURI(S3_BASE + k));
+            shuffle(urls).forEach(url => addImage(url));
+          } catch (err) {
+            console.warn('S3 listing failed, falling back to static list. Error:', err);
+            const fallback = [
+              'emobility/tesla.jpg',
+              // 'emobility/onyx.JPG',
+              'emobility/bike-camping.jpg',
+              'emobility/bike-camping-2.jpg',
+              'emobility/onyx-chicago-skyline.png',
+              'emobility/bmw-museum.jpg',
+              'emobility/cowboy-chilling-chi.jpg',
+              'emobility/cowboy-toulouse.jpg',
+              'emobility/i3-calabasas.jpg',
+              'emobility/i3-charging.jpg',
+              'emobility/i3-velar.jpg',
+              'emobility/ony-i3-camping.jpg',
+              'emobility/onyx-camping-van-va.jpg',
+              'emobility/onyx-gang.jpg',
+              'emobility/onyx-group-ride-chi-1.jpg',
+              'emobility/onyx-group-ride-chi-2.jpg',
+              'emobility/onyx-group-ride-chi-3.jpg',
+              'emobility/onyx-group-ride-chi.jpg',
+              'emobility/onyx-new-motor.jpg',
+              'emobility/i3-charging-wv.jpg',
+              'emobility/onyxes-both-garage-back.jpg',
+              'emobility/onyx-selfie-nc-1.jpg',
+              'emobility/onyx-mando-nc.jpg',
+              'emobility/onyxes-both-front.jpg',
+              'emobility/onyxes-both-back.jpg',
+              'emobility/onyx-selfie-nc.jpg',
+              'emobility/onyx-vanlife-nc.jpg',
+              'emobility/onyx-tundra-nc.jpg',
+              'emobility/bmw-ce04-garage-front.jpg',
+              'emobility/bmw-ce04-charging-bourbaki-1.jpg',
+              'emobility/bmw-ce04-chilling-saragoze.jpg',
+              'emobility/cake-makka-chilling-toulouse.jpg',
+              'emobility/bmw-ce04-charging-verdun.jpg',
+              'emobility/tesla-trip-mountain.jpg',
+              'emobility/onyx-chicago-loft-2.jpg',
+              'emobility/cake-makka-camping-canal.jpg',
+              'emobility/cake-makka-union-top.jpg',
+              'emobility/bmw-ce04-garage-bags-front.jpg',
+              'emobility/bmw-ce04-garage-bags-side.jpg',
+              'emobility/bmw-ce04-canfran.jpg',
+              'emobility/bmw-ce04-charging-bourbaki.jpg',
+              'emobility/bmw-ce04-rainy-day-1.jpg',
+              'emobility/bmw-ce04-rainy-day-2.jpg',
+              'emobility/cake-makka-union.jpg',
+              'emobility/cowboy-chicago-ready-ride-1.jpg',
+              'emobility/cowboy-chicago-ready-ride.jpg',
+              'emobility/onyx-chicago-loft-1.jpg',
+              'emobility/onyx-chicago-loft.jpg',
+              'emobility/tesla-bmw-ce04.jpg',
+              'emobility/tesla-slovenia.jpg',
+              'emobility/tesla-camping-pyrenee.jpg',
+              'emobility/pau-apartment.jpg',
+              'emobility/pau-beaumont.jpg',
+              'emobility/cowboy-boho-pallois.jpg',
+              'emobility/bmw-ce04-box-trunk.jpg',
+              'emobility/jeluhu-hiking.jpg',
+              'emobility/tesla-cowboy.jpg',
+              'emobility/bmw-ce04-garage-dark.jpg',
+              'emobility/bmw-ce04-front-right-side.jpg',
+              'emobility/bmw-ce04-mods-1.jpg',
+              'emobility/bmw-ce04-mods-2.JPG',
+              'emobility/bmw-ce04-mods-3.JPG',
+              'emobility/bmw-ce04-mods-4.JPG',
+              'emobility/bmw-ce04-mods-5.JPG',
+              'emobility/bmw-ce04-mods-6.JPG',
+              'emobility/bmw-ce04-mods-7.JPG',
+              'emobility/bmw-ce04-mods-8.JPG',
+              'emobility/bmw-ce04-mods-9.JPG',
+              'emobility/bmw-ce04-mods-10.JPG',
+              'emobility/bmw-ce04-mods-11.JPG',
+              'emobility/bmw-ce04-mods-12.JPG',
+              'emobility/bmw-ce04-mods-13.JPG',
+              'emobility/bmw-ce04-mods-14.JPG',
+              'emobility/bmw-ce04-mods-15.JPG',
+              'emobility/bmw-ce04-mods-16.JPG',
+              'emobility/bmw-ce04-mods-17.JPG',
+              'emobility/bmw-ce04-mods-18.JPG',
+              'emobility/bmw-ce04-mods-19.JPG', 
+              'emobility/bmw-ce04-trip-1.JPG',
+              'emobility/bmw-ce04-trip-2.JPG',
+              ].map(k => encodeURI(S3_BASE + k));
+            shuffle(fallback).forEach(url => addImage(url));
+          }
+        }
+
+        function addImage(src) {
+          const img = document.createElement('img');
+          img.src = src;
+          img.alt = '';
+          img.style.cursor = 'pointer';
+          img.style.width = '100%';
+          img.style.height = '100%';
+          img.style.objectFit = 'cover';
+          img.style.borderRadius = '8px';
+
+          img.onload = function() {
+            const aspect = img.naturalWidth / img.naturalHeight;
+            if (aspect > 1.2) {
+               img.style.gridColumn = 'span 2';
+            } else if (aspect < 0.8) {
+               img.style.gridRow = 'span 2';
+            }
+          };
+
+          const index = galleryImages.length;
+          galleryImages.push(src);
+
+          img.addEventListener('click', () => {
+            openLightbox(index);
+          });
+          mosaic.appendChild(img);
+        }
+
+        // start loading images
+        loadImages();
+      })();
+    </script>
+  </body>
+</html>

@@ -49,6 +49,7 @@
         background-color: #0d0d0d;
         color: white;
         margin-top: 2rem;
+        font-size: 10px;
       }
       /* New styles for profile section */
       .profile-container {
@@ -147,10 +148,6 @@
 
         async function getOpenSeaApiKey() {
           try {
-            const response = await fetch('https://celvevq6bkwhrvzzx3yc7f2inm0qmgag.lambda-url.us-east-1.on.aws/');
-            if (!response.ok) throw new Error('Failed to fetch API key');
-            const data = await response.json();
-            return data.value;
             const lambda = new AWS.Lambda();
             const data = await lambda.invoke({
               FunctionName: 'retrieveOpenSeaKey', // Ensure this matches your Lambda name
@@ -158,7 +155,6 @@
             const payload = JSON.parse(data.Payload);
             return payload.value;
           } catch (err) {
-            console.error('Error fetching API key from Lambda:', err);
             console.error('Error invoking Lambda:', err);
             return null;
           }

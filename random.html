@@ -68,62 +68,71 @@
     </header>
     <main>
       <h2> RANDOM IMAGE </h2>
-      <img id="randomImg" src="https://picsum.photos/600" alt="picsum" style="max-width:50%;border-radius:8px;margin-top:1rem;">
+      <img id="randomImg" alt="picsum" style="max-width:50%;border-radius:8px;margin-top:1rem;min-height:300px;background:#111;">
       <div id="meta" style="margin-top:1rem;color:#9f9"></div>
+      <button id="refreshBtn" style="margin-top:1rem;padding:0.5em 1em;background:#222;color:#39ff14;border:none;border-radius:4px;cursor:pointer;">🔄 Refresh</button>
 
       <script>
-        window.addEventListener('DOMContentLoaded', async () => {
-          const img = document.getElementById('randomImg');
-          const meta = document.getElementById('meta');
+        const img = document.getElementById('randomImg');
+        const meta = document.getElementById('meta');
+        const refreshBtn = document.getElementById('refreshBtn');
+
+        async function loadRandomImage() {
+          meta.textContent = 'Loading metadata...';
+          img.style.opacity = '0.5';
+          
+          // Use a unique URL to prevent caching of the redirect
+          const targetUrl = 'https://picsum.photos/600?random=' + Date.now();
 
           try {
-        // Request the image to get the final redirected URL
-        const res = await fetch(img.src);
-        const finalUrl = res.url;
-        // Try to extract the picsum id from the final URL
-        const match = finalUrl.match(/\/id\/(\d+)\//);
-        if (!match) {
-          meta.textContent = 'Could not determine image id from redirected URL: ' + finalUrl;
-          img.src = finalUrl; // still show the image
-          return;
+            // Fetch to get the final URL and ID. 
+            // Using GET instead of HEAD as it's more reliable for redirects/CORS in some envs.
+            const res = await fetch(targetUrl);
+            const finalUrl = res.url;
+            
+            // Set image source to the resolved URL so it matches
+            img.src = finalUrl;
+            img.onload = () => img.style.opacity = '1';
+
+            // Get ID from header or URL
+            let id = res.headers.get('picsum-id');
+            if (!id) {
+              const match = finalUrl.match(/\/id\/(\d+)\//);
+              if (match) id = match[1];
+            }
+
+            if (id) {
+              const infoRes = await fetch(`https://picsum.photos/id/${id}/info`);
+              if (infoRes.ok) {
+                const info = await infoRes.json();
+                meta.innerHTML = `
+                  <p>Author: <a href="${info.url}" target="_blank" rel="noopener noreferrer" style="color:#39ff14;">${info.author}</a></p>
+                  <p>Original size: ${info.width} × ${info.height}</p>
+                  <p><a href="${info.download_url}" target="_blank" rel="noopener noreferrer" style="color:#39ff14;">Download Original</a></p>
+                `;
+              } else {
+                meta.textContent = 'Could not fetch info for ID: ' + id;
+              }
+            } else {
+              meta.textContent = 'Could not determine image ID.';
+            }
+          } catch (err) {
+            // Fallback if fetch fails (e.g. CORS)
+            console.error('Metadata fetch failed:', err);
+            meta.textContent = 'Metadata unavailable (CORS or network error).';
+            img.src = targetUrl;
+            img.onload = () => img.style.opacity = '1';
+          }
         }
 
-        const id = match[1];
-        const infoUrl = `https://picsum.photos/id/${id}/info`;
-        const infoRes = await fetch(infoUrl);
-        if (!infoRes.ok) throw new Error('info endpoint returned ' + infoRes.status);
-        const info = await infoRes.json();
-
-        // Display metadata
-        meta.innerHTML = ''
-          + `<p>Author: <a href="${info.url}" target="_blank" rel="noopener noreferrer">${info.author}</a></p>`
-          + `<p>Original size: ${info.width} × ${info.height}</p>`
-          // Camera metadata info are available for images sourced from Unsplash
-          + (info.camera ? `<p>Camera: ${info.camera}</p>` : '')
-            + (info.location && info.location.name ? `<p>Location: ${info.location.name}</p>` : '')
-            // aperture, focal_length, iso, shutter_speed
-            + (info.aperture ? `<p>Aperture: ${info.aperture}</p>` : '')
-            + (info.focal_length ? `<p>Focal Length: ${info.focal_length}</p>` : '')
-            + (info.iso ? `<p>ISO: ${info.iso}</p>` : '')
-            + (info.shutter_speed ? `<p>Shutter Speed: ${info.shutter_speed}</p>` : '') 
-          // Refresh button to get a new random image
-          + `<button id="refreshBtn" style="margin-top:1rem;padding:0.5em 1em;background:#222;color:#39ff14;border:none;border-radius:4px;cursor:pointer;">🔄</button>`
-          ;
-        document.getElementById('refreshBtn').addEventListener('click', () => {
-          // Reload the page to get a new random image
-          window.location.reload();
-        });
-
-        // Ensure the shown <img> uses the final URL (preserves displayed picture)
-        img.src = finalUrl;
-          } catch (err) {
-        meta.textContent = 'Could not fetch metadata: ' + err.message;
-          }
-        });
+        refreshBtn.addEventListener('click', loadRandomImage);
+        
+        // Initial load
+        loadRandomImage();
       </script>
     </main>
     <footer>
-      <tiny>Human-made in Chicago ❤️</tiny>
+      <tiny>Made in Chicago ❤️</tiny>
     </footer>
   </body>
 </html>

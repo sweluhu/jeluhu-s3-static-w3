@@ -50,6 +50,33 @@
         color: white;
         margin-top: 2rem;
       }
+      /* New styles for profile section */
+      .profile-container {
+        max-width: 800px;
+        margin: 0 auto;
+        padding: 1rem;
+      }
+      .professional-card {
+        background: rgba(255, 255, 255, 0.05);
+        border: 1px solid #333;
+        border-radius: 16px;
+        padding: 2rem;
+        margin: 2rem 0;
+        box-shadow: 0 4px 20px rgba(0,0,0,0.5);
+        transition: transform 0.3s ease;
+      }
+      .professional-card:hover {
+        transform: translateY(-5px);
+        border-color: #39ff14;
+      }
+      .profile-image {
+        width: 100%;
+        max-width: 500px;
+        border-radius: 12px;
+        box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+        margin: 2rem 0;
+        border: 1px solid #333;
+      }
     </style>
   </head>
   <body>
@@ -67,15 +94,19 @@
       </nav>
     </header>
     <main>
-      <h2>Fam 😍 Bam</h2>
-      <img src="https://s3.amazonaws.com/junioreluhu.com/fam.jpg" alt="Family">
-      <img src="https://s3.us-east-1.amazonaws.com/junioreluhu.com/sophie-celine.jpg" alt="Kids">
-      <img src="https://s3.amazonaws.com/junioreluhu.com/fam-bam1.jpg" alt="Family and Bam">
-      <img src="https://s3.amazonaws.com/junioreluhu.com/fam-bam2.JPG" alt="Family and Bam Bam">
-      <img src="https://s3.amazonaws.com/junioreluhu.com/fam-bam3.JPG" alt="Family and Bam Bam Bam">
+      <div class="profile-container">
+        <div class="professional-card">
+          <h2 style="color: #fff; margin-bottom: 1rem;">Fam 😍 Bam</h2>
+          <p style="color: #888;">Family moments</p>
+        </div>
+        <img src="https://s3.amazonaws.com/junioreluhu.com/fam.jpg" alt="Family" class="profile-image">
+        <img src="https://s3.us-east-1.amazonaws.com/junioreluhu.com/sophie-celine.jpg" alt="Kids" class="profile-image">
+        <img src="https://s3.amazonaws.com/junioreluhu.com/fam-bam1.jpg" alt="Family and Bam" class="profile-image">
+        <img src="https://s3.amazonaws.com/junioreluhu.com/fam-bam2.JPG" alt="Family and Bam Bam" class="profile-image">
+      </div>
     </main>
     <footer>
-      <tiny>Human-made in Chicago ❤️</tiny>
+      <tiny>Made in Chicago ❤️</tiny>
     </footer>
   </body>
 </html>

@@ -4,7 +4,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>CONTACT ME ✉️</title>
-    <link rel="icon" href="https://s3.amazonaws.com/junioreluhu.com/apple-eluhu.jpg" type="image/jpeg">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>✉️</text></svg>">
     <style>
       body {
         font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
@@ -152,7 +152,7 @@
           <li><a href="/fambam.html">fam 🧑‍🧑‍🧒‍🧒 bam</a></li>
           <li><a href="/random.html">random 🖼️ image</a></li>
           <li><a href="/nft.html">nft 🪙 ₿</a></li>
-          <li><a href="#" onclick="window.open('resume.html', '_blank'); return false;">resume 📄</a></li>
+          <li><a href="/portfolio.html">portfolio 💼</a></li>
         </ul>
       </nav>
     </header>
@@ -197,7 +197,12 @@
                 <a href="#" class="cta-button" style="margin: 5px;" onclick="if(confirm('🚨 Opening your default email client. Do you want to proceed? 🚨')) { window.location.href='mailto:jeluhu@gmail.com'; } return false;">Email ✉️</a>
             </div>
             <h3 style="color: #39ff14; text-align: center;">Keybase Identity</h3>
-            <iframe src="https://keybase.io/sweluhu" width="100%" height="400" frameborder="0" style="border-radius: 8px; background: white; border: 1px solid #333;"></iframe>
+            <p style="text-align: center; color: #888;">
+              Verify my identity on Keybase:
+              <a href="https://keybase.io/sweluhu" target="_blank" rel="noopener noreferrer">
+                keybase.io/sweluhu
+              </a>
+            </p>
         </div>
       </div>
     </main>
@@ -246,7 +251,7 @@
         try {
           const lambda = new AWS.Lambda();
           const params = {
-            FunctionName: 'sendContactEmail', // Ensure this matches your Lambda function name
+            FunctionName: 'sendContactEmail',
             InvocationType: 'RequestResponse',
             Payload: JSON.stringify(formData)
           };

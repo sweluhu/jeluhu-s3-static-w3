@@ -1,0 +1,345 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PORTFOLIO 💼</title>
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>💼</text></svg>">
+    <style>
+      body {
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+        font-family: "Menlo", "Monaco", "Consolas", "Courier New", monospace;
+        background-color: #000000;
+        text-align: center;
+        color: #00ff00;
+        margin: 0;
+        padding: 0;
+      }
+      header, main, footer {
+        padding: 1rem;
+      }
+      header {
+        background-color: #0d0d0d;
+      }
+      nav ul {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+      }
+      nav li {
+        display: inline-block;
+      }
+      nav li + li::before {
+        content: "|";
+        margin: 0 0.5em;
+      }
+      a {
+        color: #39ff14; /* Neon Green */
+        text-decoration: none;
+      }
+      a:hover {
+        text-decoration: underline;
+      }
+      footer {
+        background-color: #0d0d0d;
+        color: white;
+        margin-top: 2rem;
+        font-size: 10px;
+      }
+      /* Tab Styles */
+      .tab {
+        overflow: hidden;
+        border: 1px solid #333;
+        background-color: #0d0d0d;
+        border-radius: 16px 16px 0 0;
+        max-width: 800px;
+        margin: 0 auto;
+        display: flex;
+        flex-wrap: wrap;
+      }
+      .tab button {
+        background-color: inherit;
+        float: left;
+        border: none;
+        outline: none;
+        cursor: pointer;
+        padding: 14px 16px;
+        transition: 0.3s;
+        font-size: 1rem;
+        color: #888;
+        flex: 1;
+        font-family: inherit;
+        font-weight: bold;
+        border-bottom: 1px solid #333;
+        min-width: 120px;
+      }
+      .tab button:hover {
+        background-color: #222;
+        color: #39ff14;
+      }
+      .tab button.active {
+        background-color: rgba(255, 255, 255, 0.05);
+        color: #39ff14;
+        border-bottom: none;
+      }
+      .tabcontent {
+        display: none;
+        padding: 2rem;
+        border: 1px solid #333;
+        border-top: none;
+        background: rgba(255, 255, 255, 0.05);
+        max-width: 800px;
+        margin: 2rem auto;
+        border-radius: 0 0 16px 16px;
+        box-shadow: 0 4px 20px rgba(0,0,0,0.5);
+        text-align: left;
+      }
+      .tabcontent h3 {
+        color: #39ff14;
+        border-bottom: 1px solid #333;
+        padding-bottom: 0.5rem;
+        margin-top: 0;
+      }
+      .tabcontent ul {
+        list-style-type: square;
+        padding-left: 20px;
+      }
+      .tabcontent li {
+        margin-bottom: 0.5rem;
+      }
+      .construction-banner {
+        color: #ffcc00; /* A warning yellow */
+        font-size: 2.5rem;
+        font-weight: bold;
+        text-shadow: 0 0 10px #ffcc00;
+        margin: 2rem 0;
+        text-align: center;
+      }
+      .construction-image {
+        display: block;
+        margin: 2rem auto;
+        border-radius: 8px;
+        border: 2px solid #39ff14;
+        max-width: 80%;
+      }
+      .resume-btn {
+        display: inline-block;
+        border: 2px solid #39ff14;
+        color: #39ff14;
+        padding: 10px 20px;
+        border-radius: 25px;
+        text-decoration: none;
+        font-weight: bold;
+        margin: 10px;
+        transition: background-color 0.3s, color 0.3s, box-shadow 0.3s;
+      }
+      .resume-btn:hover {
+        background-color: #39ff14;
+        color: #000;
+        box-shadow: 0 0 15px #39ff14;
+        text-decoration: none;
+      }
+      /* Modal Styles */
+      .modal {
+        display: none; 
+        position: fixed; 
+        z-index: 1000; 
+        left: 0;
+        top: 0;
+        width: 100%; 
+        height: 100%; 
+        overflow: auto; 
+        background-color: rgba(0,0,0,0.8); 
+        backdrop-filter: blur(5px);
+      }
+      .modal-content {
+        background-color: #000;
+        margin: 15% auto; 
+        padding: 20px;
+        border: 2px solid #39ff14;
+        border-radius: 16px;
+        width: 80%; 
+        max-width: 600px;
+        box-shadow: 0 0 20px rgba(57, 255, 20, 0.5);
+        text-align: left;
+        position: relative;
+        color: #00ff00;
+      }
+      .close-modal {
+        color: #39ff14;
+        float: right;
+        font-size: 28px;
+        font-weight: bold;
+        cursor: pointer;
+      }
+      .close-modal:hover {
+        color: #fff;
+      }
+    </style>
+  </head>
+  <body>
+    <header>
+      <nav>
+        <ul>
+          <li><a href="/">home 🏠</a></li>
+          <li><a href="/emobility.html">e-mobility ⚡️</a></li>
+          <li><a href="/fambam.html">fam 🧑‍🧑‍🧒‍🧒 bam</a></li>
+          <li><a href="/random.html">random 🖼️ image</a></li>
+          <li><a href="/nft.html">nft 🪙 ₿</a></li>
+          <li><a href="/contact.html">contact ✉️</a></li>
+        </ul>
+      </nav>
+    </header>
+    <main>
+      <h2 style="font-size: 2.5rem; margin-bottom: 0.5rem;">PORTFOLIO</h2>
+      <p style="color: #888; margin-bottom: 2rem;">A glimpse into my tech-savvy world.</p>
+
+      <div class="construction-banner">
+        🚧 UNDER CONSTRUCTION 🚧
+      </div>
+
+      <img src="https://s3.amazonaws.com/junioreluhu.com/under_construction.png" alt="Under Construction" class="construction-image">
+
+      <div style="text-align: center; margin: 2rem 0;">
+        <a href="https://junioreluhu.com/resume.pdf" class="resume-btn" download>Download Resume (PDF) 📄</a>
+        <a href="https://junioreluhu.com/resume-details.pdf" class="resume-btn" download>Past Work Sample (PDF) 📑</a>
+      </div>
+
+      <div class="tab">
+        <button class="tablinks active" onclick="openTab(event, 'CloudDevOps')">Cloud & DevOps ☁️</button>
+        <button class="tablinks" onclick="openTab(event, 'AIML')">AI/ML & Data 🤖</button>
+        <button class="tablinks" onclick="openTab(event, 'BackendIaC')">Backend & IaC 🛠️</button>
+        <button class="tablinks" onclick="openTab(event, 'Architecture')">Architecture 📐</button>
+      </div>
+
+      <div id="CloudDevOps" class="tabcontent" style="display: block;">
+        <h3>Cloud Architecture & DevOps</h3>
+        <ul>
+          <li>
+            <strong>Multi-Cloud Experience:</strong> Extensive experience with <strong>Azure</strong> (during tenure at GitHub) and <strong>AWS</strong>.
+          </li>
+          <li>
+            <strong>CI/CD & Orchestration:</strong> Designing and implementing scalable CI/CD pipelines using Jenkins with Kubernetes, Docker, and AWS ECS plugins.
+          </li>
+          <li>
+            <strong>Containerization:</strong> Experience with Pivotal Container Service (PKS), container orchestration, and strategy for ephemeral build agents (Fargate/Docker).
+          </li>
+          <li>
+            <strong>AWS Ecosystem:</strong> Deep expertise in AWS automation and infrastructure management, including EC2, SES, RDS, and IAM.
+          </li>
+        </ul>
+      </div>
+
+      <div id="AIML" class="tabcontent">
+        <h3>AI/ML & Data Operations</h3>
+        <ul>
+          <li>
+            <strong>ML Ops:</strong> Utilizing <strong>Amazon SageMaker</strong> for building, training, and deploying machine learning models at scale.
+          </li>
+          <li>
+            <strong>Data Processing:</strong> Python scripts for pulling metrics from CloudWatch, processing logs, and generating reports to monitor system health and performance.
+          </li>
+        </ul>
+      </div>
+
+      <div id="BackendIaC" class="tabcontent">
+        <h3>Backend, Serverless & IaC</h3>
+        <ul>
+          <li>
+            <strong>Infrastructure as Code:</strong> Proficient in <strong>Terraform</strong> (extensively used at GitHub) and CloudFormation for provisioning resources.
+          </li>
+          <li>
+            <strong>Backend Development:</strong> Proficiency in <strong>Golang</strong> for building backend services and tools. Extensive Python scripting for automation.
+          </li>
+          <li>
+            <strong>Serverless:</strong> Building and deploying serverless applications using AWS Lambda and API Gateway.
+          </li>
+          <li>
+            <strong>Web Development:</strong> Frontend development using HTML, CSS, and JavaScript. Experience working with internal enterprise CMS structures.
+          </li>
+          <li>
+            <strong>GitHub:</strong> My <a href="https://github.com/jeluhu" target="_blank">GitHub</a> contains private repositories. Access can be provided upon request.
+          </li>
+        </ul>
+      </div>
+
+      <div id="Architecture" class="tabcontent">
+        <h3>Architecture Diagrams</h3>
+        <p>
+          Visualizing complex systems is key. You can view a collection of my architecture diagrams (draw.io or png) on my Google Drive.
+        </p>
+        <div style="text-align: center; margin-top: 2rem;">
+          <a href="#" class="resume-btn" onclick="if(confirm('🚨 Redirecting to Google Drive. Do you want to proceed? 🚨')) { window.open('https://drive.google.com/drive/home?ths=true', '_blank'); } return false;">View Diagrams on Drive 📂</a>
+        </div>
+      </div>
+
+      <div style="text-align: center; margin: 2rem 0;">
+        <a href="#" class="resume-btn" onclick="showCerts(); return false;">View Certifications 📜</a>
+      </div>
+
+      <p style="color: #888; font-style: italic; font-size: 0.7rem; max-width: 800px; margin: 1rem auto;">
+        Disclaimer: Many of the scripts in my repositories reflect work done as EC2 Systems Engineer, Site Reliability Engineer and Software Engineer at GitHub. While they demonstrate skills and experience, some are under NDA and are shared for illustrative purposes. Obviously, production codes have not been shared and will not be available to the public. For more details or specific examples, please feel free to reach out via the contact page.
+      </p>
+
+      <!-- Certifications Modal -->
+      <div id="certModal" class="modal">
+        <div class="modal-content">
+          <span class="close-modal" onclick="closeModal()">&times;</span>
+          <h3 style="color: #39ff14; border-bottom: 1px solid #333; padding-bottom: 0.5rem; margin-top: 0;">Certifications</h3>
+          <ul style="list-style-type: square; padding-left: 20px;">
+            <li style="margin-bottom: 0.5rem;"><strong>AWS:</strong>
+              <ul style="list-style-type: circle; padding-left: 20px; margin-top: 5px;">
+                <li>DevOps Engineer Professional</li>
+                <li>SysOps Administrator</li>
+                <li>Developer</li>
+                <li>Solutions Architect</li>
+                <li>Security Specialty</li>
+              </ul>
+            </li>
+            <li style="margin-bottom: 0.5rem;"><strong>Extreme Networks:</strong>
+              <ul style="list-style-type: circle; padding-left: 20px; margin-top: 5px;">
+                <li>Specialist</li>
+                <li>Associates</li>
+              </ul>
+            </li>
+            <li style="margin-bottom: 0.5rem;"><strong>CompTIA:</strong> Network+</li>
+            <li style="margin-bottom: 0.5rem;"><strong>MIT Professional Education:</strong> Cybersecurity</li>
+          </ul>
+          <div style="text-align: center; margin-top: 20px;">
+            <a href="#" class="resume-btn" onclick="if(confirm('🚨 Redirecting to LinkedIn. Do you want to proceed? 🚨')) { window.open('https://www.linkedin.com/in/sweluhu/details/certifications/', '_blank'); closeModal(); } return false;">View on LinkedIn 🖇️</a>
+          </div>
+        </div>
+      </div>
+    </main>
+    <footer>
+      <tiny>Made in Chicago ❤️</tiny>
+    </footer>
+    <script>
+      function openTab(evt, tabName) {
+        var i, tabcontent, tablinks;
+        tabcontent = document.getElementsByClassName("tabcontent");
+        for (i = 0; i < tabcontent.length; i++) {
+          tabcontent[i].style.display = "none";
+        }
+        tablinks = document.getElementsByClassName("tablinks");
+        for (i = 0; i < tablinks.length; i++) {
+          tablinks[i].className = tablinks[i].className.replace(" active", "");
+        }
+        document.getElementById(tabName).style.display = "block";
+        evt.currentTarget.className += " active";
+      }
+      function showCerts() {
+        document.getElementById("certModal").style.display = "block";
+      }
+      function closeModal() {
+        document.getElementById("certModal").style.display = "none";
+      }
+      window.onclick = function(event) {
+        var modal = document.getElementById("certModal");
+        if (event.target == modal) {
+          modal.style.display = "none";
+        }
+      }
+    </script>
+  </body>
+</html>

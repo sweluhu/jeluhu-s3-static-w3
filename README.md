@@ -20,6 +20,7 @@ You can visit the live site at: [https://www.junioreluhu.com/](https://www.junio
   - Touch-friendly controls for mobile devices.
 - **Secure User Authentication**: Leverages [Amazon Cognito](https://aws.amazon.com/cognito/) User Pools for user sign-up/sign-in, and Identity Pools to provide temporary AWS credentials for both authenticated and unauthenticated users.
 - **Video Gallery**: Includes video thumbnails that autoplay on hover for a more interactive experience.
+- **Serverless Contact Form**: Submits messages directly to AWS Lambda, which uses Amazon SES to send emails.
 - **Neon Theme**: A distinct dark mode aesthetic with neon green accents and a minimalist "Made in..." footer for a modern look and feel.
 
 ## Pages
@@ -36,6 +37,7 @@ You can visit the live site at: [https://www.junioreluhu.com/](https://www.junio
 - **Fam Bam**: A family photo gallery.
 - **Random**: Random image generator.
 - **Resume**: Professional resume.
+- **Contact**: Contact form, social media links, and Keybase identity.
 
 ## Tech Stack & Infrastructure
 
@@ -53,6 +55,8 @@ This project leverages the following technologies and services:
   - [AWS Key Management Service (KMS)](https://aws.amazon.com/kms/) for encrypting data at rest in S3.
 - **Serverless Compute**:
   - [AWS Lambda](https://aws.amazon.com/lambda/) (Python 3) for backend processing tasks.
+- **Communication**:
+  - [Amazon Simple Email Service (SES)](https://aws.amazon.com/ses/) for sending emails.
 - **Infrastructure as Code**:
   - The AWS infrastructure is defined and managed using [Terraform](https://www.terraform.io/).
 

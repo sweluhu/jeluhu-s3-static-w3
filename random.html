@@ -51,6 +51,27 @@
         margin-top: 2rem;
         font-size: 10px;
       }
+      .cta-button {
+        display: inline-block;
+        background-color: transparent;
+        color: #39ff14;
+        border: 2px solid #39ff14;
+        padding: 0.8rem 2rem;
+        border-radius: 50px;
+        font-weight: bold;
+        margin-top: 1.5rem;
+        transition: all 0.3s ease;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        cursor: pointer;
+        font-size: 1rem;
+      }
+      .cta-button:hover {
+        background-color: #39ff14;
+        color: #000;
+        text-decoration: none;
+        box-shadow: 0 0 20px rgba(57, 255, 20, 0.4);
+      }
     </style>
   </head>
   <body>
@@ -61,9 +82,8 @@
           <li><a href="/emobility.html">e-mobility ⚡️</a></li>
           <li><a href="/fambam.html">fam 🧑‍🧑‍🧒‍🧒 bam</a></li>
           <li><a href="/nft.html">nft 🪙 ₿</a></li>
-          <li><a href="#" onclick="if(confirm('🚨 Redirecting to LinkedIn. Do you want to proceed? 🚨')) { window.open('https://www.linkedin.com/in/sweluhu/', '_blank'); }">linkedIn 🖇️</a></li>
           <li><a href="#" onclick="window.open('resume.html', '_blank'); return false;">resume 📄</a></li>
-          <li><a href="#" onclick="if(confirm('🚨 Opening your default email client. Do you want to proceed? 🚨')) { window.location.href='mailto:jeluhu@gmail.com'; } return false;">contact ✉️</a></li>
+          <li><a href="/contact.html">contact ✉️</a></li>
         </ul>
       </nav>
     </header>
@@ -71,7 +91,7 @@
       <h2> RANDOM IMAGE </h2>
       <img id="randomImg" alt="picsum" style="max-width:50%;border-radius:8px;margin-top:1rem;min-height:300px;background:#111;">
       <div id="meta" style="margin-top:1rem;color:#9f9"></div>
-      <button id="refreshBtn" style="margin-top:1rem;padding:0.5em 1em;background:#222;color:#39ff14;border:none;border-radius:4px;cursor:pointer;">🔄 Refresh</button>
+      <button id="refreshBtn" class="cta-button">🔄 Generate New Image</button>
 
       <script>
         const img = document.getElementById('randomImg');

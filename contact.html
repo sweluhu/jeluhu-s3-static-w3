@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CONTACT ME ✉️</title>
+    <style>
+      body {
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+        font-family: "Menlo", "Monaco", "Consolas", "Courier New", monospace;
+        background-color: #000000;
+        text-align: center;
+        color: #00ff00;
+        margin: 0;
+        padding: 0;
+      }
+      header, main, footer {
+        padding: 1rem;
+      }
+      header {
+        background-color: #0d0d0d;
+      }
+      nav ul {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+      }
+      nav li {
+        display: inline-block;
+      }
+      nav li + li::before {
+        content: "|";
+        margin: 0 0.5em;
+      }
+      a {
+        color: #39ff14; /* Neon Green */
+        text-decoration: none;
+      }
+      a:hover {
+        text-decoration: underline;
+      }
+      footer {
+        background-color: #0d0d0d;
+        color: white;
+        margin-top: 2rem;
+        font-size: 10px;
+      }
+      .cta-button {
+        display: inline-block;
+        background-color: transparent;
+        color: #39ff14;
+        border: 2px solid #39ff14;
+        padding: 0.8rem 2rem;
+        border-radius: 50px;
+        font-weight: bold;
+        margin-top: 1.5rem;
+        transition: all 0.3s ease;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        cursor: pointer;
+        font-size: 1rem;
+        font-family: inherit;
+      }
+      .cta-button:hover {
+        background-color: #39ff14;
+        color: #000;
+        text-decoration: none;
+        box-shadow: 0 0 20px rgba(57, 255, 20, 0.4);
+      }
+      
+      /* Tab Styles */
+      .tab {
+        overflow: hidden;
+        border: 1px solid #333;
+        background-color: #0d0d0d;
+        border-radius: 16px 16px 0 0;
+        max-width: 600px;
+        margin: 0 auto;
+        display: flex;
+      }
+      .tab button {
+        background-color: inherit;
+        float: left;
+        border: none;
+        outline: none;
+        cursor: pointer;
+        padding: 14px 16px;
+        transition: 0.3s;
+        font-size: 1rem;
+        color: #888;
+        flex: 1;
+        font-family: inherit;
+        font-weight: bold;
+        border-bottom: 1px solid #333;
+      }
+      .tab button:hover {
+        background-color: #222;
+        color: #39ff14;
+      }
+      .tab button.active {
+        background-color: rgba(255, 255, 255, 0.05);
+        color: #39ff14;
+        border-bottom: none;
+      }
+      .tabcontent {
+        display: none;
+        padding: 2rem;
+        border: 1px solid #333;
+        border-top: none;
+        background: rgba(255, 255, 255, 0.05);
+        max-width: 600px;
+        margin: 0 auto;
+        border-radius: 0 0 16px 16px;
+        box-shadow: 0 4px 20px rgba(0,0,0,0.5);
+      }
+      form {
+        display: flex;
+        flex-direction: column;
+        text-align: left;
+      }
+      label {
+        margin-top: 1rem;
+        margin-bottom: 0.5rem;
+        color: #39ff14;
+        font-weight: bold;
+      }
+      input, textarea {
+        background-color: #000;
+        border: 1px solid #333;
+        color: #00ff00;
+        padding: 0.8rem;
+        border-radius: 8px;
+        font-family: inherit;
+        font-size: 1rem;
+        transition: border-color 0.3s ease, box-shadow 0.3s ease;
+      }
+      input:focus, textarea:focus {
+        outline: none;
+        border-color: #39ff14;
+        box-shadow: 0 0 10px rgba(57, 255, 20, 0.2);
+      }
+    </style>
+    <script src="https://sdk.amazonaws.com/js/aws-sdk-2.1259.0.min.js"></script>
+  </head>
+  <body>
+    <header>
+      <nav>
+        <ul>
+          <li><a href="/">home 🏠</a></li>
+          <li><a href="/emobility.html">e-mobility ⚡️</a></li>
+          <li><a href="/fambam.html">fam 🧑‍🧑‍🧒‍🧒 bam</a></li>
+          <li><a href="/random.html">random 🖼️ image</a></li>
+          <li><a href="/nft.html">nft 🪙 ₿</a></li>
+          <li><a href="#" onclick="window.open('resume.html', '_blank'); return false;">resume 📄</a></li>
+        </ul>
+      </nav>
+    </header>
+    <main>
+      <h2 style="font-size: 2.5rem; margin-bottom: 0.5rem;">GET IN TOUCH</h2>
+      <p style="color: #888; margin-bottom: 2rem;">Send me a message or find me online.</p>
+      
+      <div class="tab">
+        <button class="tablinks active" onclick="openTab(event, 'ContactForm')">Send Message ✉️</button>
+        <button class="tablinks" onclick="openTab(event, 'ContactInfo')">Contact Info 🌐</button>
+      </div>
+
+      <div id="ContactForm" class="tabcontent" style="display: block;">
+        <form id="contact-form">
+          <label for="name">Name</label>
+          <input type="text" id="name" name="name" required placeholder="Your Name">
+          
+          <label for="email">Email</label>
+          <input type="email" id="email" name="email" required placeholder="your.email@example.com">
+          
+          <label for="subject">Subject</label>
+          <input type="text" id="subject" name="subject" required placeholder="What is this about?">
+          
+          <label for="message">Message</label>
+          <textarea id="message" name="message" rows="6" required placeholder="Your message here..."></textarea>
+          
+          <div style="text-align: center;">
+            <button type="submit" class="cta-button">Send Message 🚀</button>
+          </div>
+        </form>
+      </div>
+
+      <div id="ContactInfo" class="tabcontent">
+        <div style="text-align: left;">
+            <h3 style="color: #39ff14; margin-top: 0; text-align: center;">Social Networks</h3>
+            <div style="margin-bottom: 2rem;">
+                <a href="#" class="cta-button" style="margin: 5px;" onclick="if(confirm('🚨 Redirecting to LinkedIn. Do you want to proceed? 🚨')) { window.open('https://www.linkedin.com/in/sweluhu/', '_blank'); } return false;">LinkedIn 🖇️</a>
+                <a href="#" class="cta-button" style="margin: 5px;" onclick="if(confirm('🚨 Redirecting to GitHub. Do you want to proceed? 🚨')) { window.open('https://github.com/jeluhu', '_blank'); } return false;">GitHub 🐙</a>
+                <a href="#" class="cta-button" style="margin: 5px;" onclick="if(confirm('🚨 Redirecting to X. Do you want to proceed? 🚨')) { window.open('https://x.com/sweluhu', '_blank'); } return false;">X.ai 🐦</a>
+                <a href="#" class="cta-button" style="margin: 5px;" onclick="if(confirm('🚨 Redirecting to Facebook. Do you want to proceed? 🚨')) { window.open('https://www.facebook.com/sweluhu', '_blank'); } return false;">Facebook 📘</a>
+                <a href="#" class="cta-button" style="margin: 5px;" onclick="if(confirm('🚨 Redirecting to Instagram. Do you want to proceed? 🚨')) { window.open('https://www.instagram.com/eluhuj', '_blank'); } return false;">Instagram 📸</a>
+                <a href="#" class="cta-button" style="margin: 5px;" onclick="if(confirm('🚨 Opening your default email client. Do you want to proceed? 🚨')) { window.location.href='mailto:jeluhu@gmail.com'; } return false;">Email ✉️</a>
+            </div>
+            <h3 style="color: #39ff14; text-align: center;">Keybase Identity</h3>
+            <iframe src="https://keybase.io/sweluhu" width="100%" height="400" frameborder="0" style="border-radius: 8px; background: white; border: 1px solid #333;"></iframe>
+        </div>
+      </div>
+    </main>
+    <footer>
+      <tiny>Made in Chicago ❤️</tiny>
+    </footer>
+    <script>
+      function openTab(evt, tabName) {
+        var i, tabcontent, tablinks;
+        tabcontent = document.getElementsByClassName("tabcontent");
+        for (i = 0; i < tabcontent.length; i++) {
+          tabcontent[i].style.display = "none";
+        }
+        tablinks = document.getElementsByClassName("tablinks");
+        for (i = 0; i < tablinks.length; i++) {
+          tablinks[i].className = tablinks[i].className.replace(" active", "");
+        }
+        document.getElementById(tabName).style.display = "block";
+        evt.currentTarget.className += " active";
+      }
+
+      // AWS Configuration
+      AWS.config.update({
+        region: 'us-east-1',
+        credentials: new AWS.CognitoIdentityCredentials({
+          IdentityPoolId: 'us-east-1:17e37220-fa99-45b9-80b1-4faaf19be9cd'
+        })
+      });
+
+      const form = document.getElementById('contact-form');
+      form.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const submitBtn = form.querySelector('button[type="submit"]');
+        const originalText = submitBtn.textContent;
+        
+        submitBtn.textContent = 'Sending... ⏳';
+        submitBtn.disabled = true;
+
+        const formData = {
+          name: document.getElementById('name').value,
+          email: document.getElementById('email').value,
+          subject: document.getElementById('subject').value,
+          message: document.getElementById('message').value
+        };
+
+        try {
+          const lambda = new AWS.Lambda();
+          const params = {
+            FunctionName: 'sendContactEmail', // Ensure this matches your Lambda function name
+            InvocationType: 'RequestResponse',
+            Payload: JSON.stringify(formData)
+          };
+          
+          await lambda.invoke(params).promise();
+          alert('Message sent successfully! 🚀');
+          form.reset();
+        } catch (err) {
+          console.error('Error sending message:', err);
+          alert('Failed to send message. Please try again later.');
+        } finally {
+          submitBtn.textContent = originalText;
+          submitBtn.disabled = false;
+        }
+      });
+    </script>
+  </body>
+</html>

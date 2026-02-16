@@ -92,17 +92,34 @@
       .nft-grid {
         display: grid;
         grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-        gap: 1.5rem;
+        grid-auto-flow: dense;
+        gap: 10px;
         margin-top: 2rem;
+      }
+      .nft-item {
+        position: relative;
+        border-radius: 8px;
+        overflow: hidden;
       }
       .nft-item img {
         width: 100%;
+        height: 100%;
+        object-fit: cover;
         border-radius: 8px;
         transition: transform 0.3s ease;
+        display: block;
       }
       .nft-item:hover img {
         transform: scale(1.05);
         box-shadow: 0 0 15px #39ff14;
+      }
+      .nft-item p {
+        position: absolute; bottom: 0; left: 0; right: 0;
+        background: rgba(0,0,0,0.7); color: #fff; margin: 0; padding: 5px;
+        font-size: 0.8rem; opacity: 0; transition: opacity 0.3s;
+      }
+      .nft-item:hover p {
+        opacity: 1;
       }
     </style>
     <script src="https://sdk.amazonaws.com/js/aws-sdk-2.1259.0.min.js"></script>
@@ -115,9 +132,8 @@
           <li><a href="/emobility.html">e-mobility ⚡️</a></li>
           <li><a href="/fambam.html">fam 🧑‍🧑‍🧒‍🧒 bam</a></li>
           <li><a href="/random.html">random 🖼️ image</a></li>
-          <li><a href="#" onclick="if(confirm('🚨 Redirecting to LinkedIn. Do you want to proceed? 🚨')) { window.open('https://www.linkedin.com/in/sweluhu/', '_blank'); }">linkedIn 🖇️</a></li>
           <li><a href="#" onclick="window.open('resume.html', '_blank'); return false;">resume 📄</a></li>
-          <li><a href="#" onclick="if(confirm('🚨 Opening your default email client. Do you want to proceed? 🚨')) { window.location.href='mailto:jeluhu@gmail.com'; } return false;">contact ✉️</a></li>
+          <li><a href="/contact.html">contact ✉️</a></li>
         </ul>
       </nav>
     </header>
@@ -135,7 +151,7 @@
           <div id="nft-gallery" class="nft-grid">
             <p>Loading NFTs...</p>
           </div>
-          <a href="https://opensea.io/gallery/0x82ab730e819f81b9044dd0f9a6383579fd91b95e/42e17da775bf444e8c8db56f598a6bf9" target="_blank" class="cta-button">View on OpenSea</a>
+          <a href="https://opensea.io/gallery/0x82ab730e819f81b9044dd0f9a6383579fd91b95e/42e17da775bf444e8c8db56f598a6bf9" target="_blank" class="cta-button">Gallery on OpenSea</a>
         </div>
       </div>
       <script>
@@ -146,11 +162,131 @@
           })
         });
 
+        // Lightbox state
+        let galleryImages = [];
+        let currentImageIndex = 0;
+
+        // simple modal/lightbox for mosaic images
+        const modal = document.createElement('div');
+        modal.style.cssText = `
+          display: none;
+          position: fixed;
+          z-index: 1000;
+          left: 0;
+          top: 0;
+          width: 100%;
+          height: 100%;
+          background-color: rgba(0, 0, 0, 0.9);
+        `;
+
+        const modalImg = document.createElement('img');
+        modalImg.style.cssText = `
+          margin: auto;
+          display: block;
+          max-width: 90%;
+          max-height: 90%;
+          position: absolute;
+          top: 50%;
+          left: 50%;
+          transform: translate(-50%, -50%);
+        `;
+
+        // Navigation buttons
+        const prevBtn = document.createElement('a');
+        prevBtn.innerHTML = '&#10094;';
+        prevBtn.style.cssText = `
+            cursor: pointer;
+            position: absolute;
+            top: 50%;
+            width: auto;
+            padding: 16px;
+            margin-top: -50px;
+            color: white;
+            font-weight: bold;
+            font-size: 20px;
+            transition: 0.6s ease;
+            border-radius: 0 3px 3px 0;
+            user-select: none;
+            -webkit-user-select: none;
+            left: 0;
+            text-decoration: none;
+            background-color: rgba(0,0,0,0.5);
+        `;
+
+        const nextBtn = document.createElement('a');
+        nextBtn.innerHTML = '&#10095;';
+        nextBtn.style.cssText = `
+            cursor: pointer;
+            position: absolute;
+            top: 50%;
+            width: auto;
+            padding: 16px;
+            margin-top: -50px;
+            color: white;
+            font-weight: bold;
+            font-size: 20px;
+            transition: 0.6s ease;
+            border-radius: 3px 0 0 3px;
+            user-select: none;
+            -webkit-user-select: none;
+            right: 0;
+            text-decoration: none;
+            background-color: rgba(0,0,0,0.5);
+        `;
+
+        modal.appendChild(modalImg);
+        modal.appendChild(prevBtn);
+        modal.appendChild(nextBtn);
+        document.body.appendChild(modal);
+
+        function showImage(index) {
+          if (index >= galleryImages.length) index = 0;
+          if (index < 0) index = galleryImages.length - 1;
+          currentImageIndex = index;
+          modalImg.src = galleryImages[index];
+        }
+
+        function openLightbox(index) {
+          showImage(index);
+          modal.style.display = 'block';
+        }
+
+        modal.addEventListener('click', (e) => {
+          if (e.target === modal || e.target === modalImg) {
+            modal.style.display = 'none';
+            modalImg.src = '';
+          }
+        });
+
+        prevBtn.addEventListener('click', (e) => {
+          e.stopPropagation();
+          showImage(currentImageIndex - 1);
+        });
+
+        nextBtn.addEventListener('click', (e) => {
+          e.stopPropagation();
+          showImage(currentImageIndex + 1);
+        });
+
+        // Keyboard navigation
+        document.addEventListener('keydown', (e) => {
+          if (modal.style.display === 'block') {
+            if (e.key === 'Escape') {
+              modal.style.display = 'none';
+              modalImg.src = '';
+            } else if (e.key === 'ArrowLeft') {
+              showImage(currentImageIndex - 1);
+            } else if (e.key === 'ArrowRight') {
+              showImage(currentImageIndex + 1);
+            }
+          }
+        });
+
         async function getOpenSeaApiKey() {
           try {
             const lambda = new AWS.Lambda();
             const data = await lambda.invoke({
-              FunctionName: 'retrieveOpenSeaKey', // Ensure this matches your Lambda name
+              FunctionName: 'retrieveOpenSeaKey', 
             }).promise();
             const payload = JSON.parse(data.Payload);
             return payload.value;
@@ -178,15 +314,36 @@
             });
             const data = await response.json();
             
+            gallery.innerHTML = '';
+            galleryImages = [];
+
             if (data.nfts) {
-              gallery.innerHTML = data.nfts.map(nft => `
-                <div class="nft-item">
-                  <a href="${nft.opensea_url}" target="_blank">
-                    <img src="${nft.image_url || nft.display_image_url || 'https://via.placeholder.com/250'}" alt="${nft.name}">
-                  </a>
-                  <p style="margin-top:0.5rem; font-size:0.9rem;">${nft.name || 'Untitled'}</p>
-                </div>
-              `).join('');
+              data.nfts.forEach(nft => {
+                const div = document.createElement('div');
+                div.className = 'nft-item';
+                
+                const img = document.createElement('img');
+                img.alt = nft.name;
+                img.style.cursor = 'pointer';
+                img.onload = () => {
+                  const aspect = img.naturalWidth / img.naturalHeight;
+                  if (aspect > 1.2) div.style.gridColumn = 'span 2';
+                  else if (aspect < 0.8) div.style.gridRow = 'span 2';
+                };
+                const src = nft.image_url || nft.display_image_url || 'https://via.placeholder.com/250';
+                img.src = src;
+
+                const index = galleryImages.length;
+                galleryImages.push(src);
+                img.addEventListener('click', () => openLightbox(index));
+                
+                const p = document.createElement('p');
+                p.textContent = nft.name || 'Untitled';
+                
+                div.appendChild(img);
+                div.appendChild(p);
+                gallery.appendChild(div);
+              });
             } else {
               gallery.innerHTML = '<p>No NFTs found.</p>';
             }

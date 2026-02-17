@@ -36,8 +36,9 @@ You can visit the live site at: [https://www.junioreluhu.com/](https://www.junio
 - **NFT**: An NFT Gallery.
 - **Fam Bam**: A family photo gallery.
 - **Random**: Random image generator.
-- **Resume**: Professional resume.
 - **Contact**: Contact form, social media links, and Keybase identity.
+- **Portfolio**: Professional portfolio.
+- **DevOps Credentials**: AWS Training & Certification Certificate.
 
 ## Tech Stack & Infrastructure
 

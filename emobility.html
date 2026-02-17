@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>E-MOBILITY 🏍️⚡️</title>
     <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>⚡</text></svg>">
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&display=swap" rel="stylesheet">
     <style>
       body {
         font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
@@ -38,6 +39,13 @@
       }
       a:hover {
         text-decoration: underline;
+      }
+      nav a {
+        font-weight: bold;
+      }
+      nav {
+        font-family: 'Orbitron', sans-serif;
+        letter-spacing: 2px;
       }
       .mosaic {
         display: grid;
@@ -117,12 +125,12 @@
     <header>
       <nav>
         <ul>
-          <li><a href="/">home 🏠</a></li>
-          <li><a href="/fambam.html">fam 🧑‍🧑‍🧒‍🧒 bam</a></li>
-          <li><a href="/random.html">random 🖼️ image</a></li>
-          <li><a href="/nft.html">nft 🪙 ₿</a></li>
-          <li><a href="/portfolio.html">portfolio 💼</a></li>
-          <li><a href="/contact.html">contact ✉️</a></li>
+          <li><a href="/">jeluhu</a></li>
+          <li><a href="/fambam.html">fam-bam</a></li>
+          <li><a href="/random.html">random</a></li>
+          <li><a href="/nft.html">nft</a></li>
+          <li><a href="/portfolio.html">portfolio</a></li>
+          <li><a href="/contact.html">contact</a></li>
         </ul>
       </nav>
     </header>
@@ -152,10 +160,14 @@
           })
         });
 
-        const S3_BASE = 'https://s3.amazonaws.com/junioreluhu.com/';
-        const PREFIX = 'emobility/';
         const BUCKET_NAME = 'junioreluhu.com';
+        const S3_BASE = `https://s3.amazonaws.com/${BUCKET_NAME}/`;
+        const PREFIX = 'emobility/';
 
+        const s3 = new AWS.S3({
+          apiVersion: '2006-03-01',
+          params: { Bucket: BUCKET_NAME }
+        });
         // Fisher-Yates shuffle to randomize order
         function shuffle(array) {
           for (let i = array.length - 1; i > 0; i--) {
@@ -307,9 +319,7 @@
 
         async function loadMedia() {
           try {
-            const s3 = new AWS.S3();
-            const s3Params = { Bucket: BUCKET_NAME, Prefix: PREFIX };
-            const s3Data = await s3.listObjectsV2(s3Params).promise();
+            const s3Data = await s3.listObjectsV2({ Prefix: PREFIX }).promise();
             const keys = s3Data.Contents.map(c => c.Key)
               .filter(k => k !== PREFIX)
               .filter(k => isImageKey(k) || isVideoKey(k));
@@ -321,106 +331,7 @@
             shuffle(urls).forEach(url => addMediaItem(url, fragment));
             mosaic.appendChild(fragment);
           } catch (err) {
-            console.warn('S3 listing failed, falling back to static list. Error:', err);
-            const imageFallback = [
-              'emobility/tesla.jpg',
-              // 'emobility/onyx.JPG',
-              'emobility/bike-camping.jpg',
-              'emobility/bike-camping-2.jpg',
-              'emobility/onyx-chicago-skyline.png',
-              'emobility/bmw-museum.jpg',
-              'emobility/cowboy-chilling-chi.jpg',
-              'emobility/cowboy-toulouse.jpg',
-              'emobility/i3-calabasas.jpg',
-              'emobility/i3-charging.jpg',
-              'emobility/i3-velar.jpg',
-              'emobility/ony-i3-camping.jpg',
-              'emobility/onyx-camping-van-va.jpg',
-              'emobility/onyx-gang.jpg',
-              'emobility/onyx-group-ride-chi-1.jpg',
-              'emobility/onyx-group-ride-chi-2.jpg',
-              'emobility/onyx-group-ride-chi-3.jpg',
-              'emobility/onyx-group-ride-chi.jpg',
-              'emobility/onyx-new-motor.jpg',
-              'emobility/i3-charging-wv.jpg',
-              'emobility/onyxes-both-garage-back.jpg',
-              'emobility/onyx-selfie-nc-1.jpg',
-              'emobility/onyx-mando-nc.jpg',
-              'emobility/onyxes-both-front.jpg',
-              'emobility/onyxes-both-back.jpg',
-              'emobility/onyx-selfie-nc.jpg',
-              'emobility/onyx-vanlife-nc.jpg',
-              'emobility/onyx-tundra-nc.jpg',
-              'emobility/bmw-ce04-garage-front.jpg',
-              'emobility/bmw-ce04-charging-bourbaki-1.jpg',
-              'emobility/bmw-ce04-chilling-saragoze.jpg',
-              'emobility/cake-makka-chilling-toulouse.jpg',
-              'emobility/bmw-ce04-charging-verdun.jpg',
-              'emobility/tesla-trip-mountain.jpg',
-              'emobility/onyx-chicago-loft-2.jpg',
-              'emobility/cake-makka-camping-canal.jpg',
-              'emobility/cake-makka-union-top.jpg',
-              'emobility/bmw-ce04-garage-bags-front.jpg',
-              'emobility/bmw-ce04-garage-bags-side.jpg',
-              'emobility/bmw-ce04-canfran.jpg',
-              'emobility/bmw-ce04-charging-bourbaki.jpg',
-              'emobility/bmw-ce04-rainy-day-1.jpg',
-              'emobility/bmw-ce04-rainy-day-2.jpg',
-              'emobility/cake-makka-union.jpg',
-              'emobility/cowboy-chicago-ready-ride-1.jpg',
-              'emobility/cowboy-chicago-ready-ride.jpg',
-              'emobility/onyx-chicago-loft-1.jpg',
-              'emobility/onyx-chicago-loft.jpg',
-              'emobility/tesla-bmw-ce04.jpg',
-              'emobility/tesla-slovenia.jpg',
-              'emobility/tesla-camping-pyrenee.jpg',
-              'emobility/pau-apartment.jpg',
-              'emobility/pau-beaumont.jpg',
-              'emobility/cowboy-boho-pallois.jpg',
-              'emobility/bmw-ce04-box-trunk.jpg',
-              'emobility/jeluhu-hiking.jpg',
-              'emobility/tesla-cowboy.jpg',
-              'emobility/bmw-ce04-garage-dark.jpg',
-              'emobility/bmw-ce04-front-right-side.jpg',
-              'emobility/bmw-ce04-mods-1.jpg',
-              'emobility/bmw-ce04-mods-2.JPG',
-              'emobility/bmw-ce04-mods-3.JPG',
-              'emobility/bmw-ce04-mods-4.JPG',
-              'emobility/bmw-ce04-mods-5.JPG',
-              'emobility/bmw-ce04-mods-6.JPG',
-              'emobility/bmw-ce04-mods-7.JPG',
-              'emobility/bmw-ce04-mods-8.JPG',
-              'emobility/bmw-ce04-mods-9.JPG',
-              'emobility/bmw-ce04-mods-10.JPG',
-              'emobility/bmw-ce04-mods-11.JPG',
-              'emobility/bmw-ce04-mods-12.JPG',
-              'emobility/bmw-ce04-mods-13.JPG',
-              'emobility/bmw-ce04-mods-14.JPG',
-              'emobility/bmw-ce04-mods-15.JPG',
-              'emobility/bmw-ce04-mods-16.JPG',
-              'emobility/bmw-ce04-mods-17.JPG',
-              'emobility/bmw-ce04-mods-18.JPG',
-              'emobility/bmw-ce04-mods-19.JPG', 
-              'emobility/bmw-ce04-trip-1.JPG',
-              'emobility/bmw-ce04-trip-2.JPG',
-              ].map(k => encodeURI(S3_BASE + k));
-            const videoFallback = [
-              'emobility/movies/onyxes.mp4',
-              'emobility/movies/onyx-speed-test-nc.mp4',
-              'emobility/movies/onyx-reid-front.mov',
-              'emobility/movies/bmw-ce04-showroom.mov',
-              'emobility/movies/onyx-360-nc.mov',
-              'emobility/movies/onyx-camping-can-il.mov',
-              'emobility/movies/onyx-pond-nc.mov',
-              'emobility/movies/onyx-reid-back.mov',
-              'emobility/movies/onyx-screen-test.mov',
-              'emobility/movies/tesla-camping-pyrenee.mov',
-              'emobility/movies/pau-emobility.mov',
-              'emobility/movies/bmw-ce04-riding-cold.mov',
-            ].map(k => encodeURI(S3_BASE + k));
-            const fragment = document.createDocumentFragment();
-            shuffle(imageFallback.concat(videoFallback)).forEach(url => addMediaItem(url, fragment));
-            mosaic.appendChild(fragment);
+            console.error('S3 listing failed. Error:', err);
           }
         }
 

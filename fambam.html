@@ -4,6 +4,8 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>FAM 😍 BAM</title>
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>😍</text></svg>">
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&display=swap" rel="stylesheet">
         <style>
       body {
         font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
@@ -38,6 +40,13 @@
       }
       a:hover {
         text-decoration: underline;
+      }
+      nav a {
+        font-weight: bold;
+      }
+      nav {
+        font-family: 'Orbitron', sans-serif;
+        letter-spacing: 2px;
       }
       img {
         max-width: 50%;
@@ -83,8 +92,8 @@
       .tm-container {
         position: relative;
         width: 100%;
-        max-width: 500px;
-       aspect-ratio: 3/4;
+        max-width: 550px;
+        aspect-ratio: 2/3;
         margin: 2rem auto;
         perspective: 1000px;
         transform-style: preserve-3d;
@@ -127,17 +136,18 @@
         z-index: 8;
       }
     </style>
+    <script src="https://sdk.amazonaws.com/js/aws-sdk-2.1259.0.min.js"></script>
   </head>
   <body>
     <header>
       <nav>
         <ul>
-          <li><a href="/">home 🏠</a></li>
-          <li><a href="/emobility.html">e-mobility ⚡️</a></li>
-          <li><a href="/random.html">random 🖼️ image</a></li>
-          <li><a href="/nft.html">nft 🪙 ₿</a></li>
-          <li><a href="/portfolio.html">portfolio 💼</a></li>
-          <li><a href="/contact.html">contact ✉️</a></li>
+          <li><a href="/">jeluhu</a></li>
+          <li><a href="/emobility.html">e-mobility</a></li>
+          <li><a href="/random.html">random</a></li>
+          <li><a href="/nft.html">nft</a></li>
+          <li><a href="/portfolio.html">portfolio</a></li>
+          <li><a href="/contact.html">contact</a></li>
         </ul>
       </nav>
     </header>
@@ -148,35 +158,83 @@
           <p style="color: #888;">Family moments<br>👩‍❤️👨🏾‍🦱 👧🏽👶🏽</p>
           <p style="color: #e0e0e0; line-height: 1.6;">Here are some of my favorite family moments captured in photos. My wife and my two beautiful daughters are the light of my life.</p>
         </div>
-        <div class="tm-container">
-          <img src="https://s3.amazonaws.com/junioreluhu.com/fam.jpg" alt="Family" class="tm-slide active">
-          <img src="https://s3.us-east-1.amazonaws.com/junioreluhu.com/sophie-celine.jpg" alt="Kids" class="tm-slide next">
-          <img src="https://s3.amazonaws.com/junioreluhu.com/fam-bam1.jpg" alt="Family and Bam" class="tm-slide next-2">
-          <img src="https://s3.amazonaws.com/junioreluhu.com/fam-bam2.JPG" alt="Family and Bam Bam" class="tm-slide">
-          <img src="https://s3.amazonaws.com/junioreluhu.com/fam-bam31.JPG" alt="Family and Bam Bam Bam" class="tm-slide">
-        </div>
+        <div class="tm-container" id="tm-container"></div>
       </div>
     </main>
     <footer>
       <tiny>Made in Chicago ❤️</tiny>
     </footer>
     <script>
-      const slides = document.querySelectorAll('.tm-slide');
-      let currentIndex = 0;
+      AWS.config.update({
+        region: 'us-east-1',
+        credentials: new AWS.CognitoIdentityCredentials({
+          IdentityPoolId: 'us-east-1:17e37220-fa99-45b9-80b1-4faaf19be9cd'
+        })
+      });
 
-      function nextSlide() {
-        currentIndex = (currentIndex + 1) % slides.length;
-        slides.forEach((slide, index) => {
-          slide.classList.remove('active', 'prev', 'next', 'next-2');
-          let diff = (index - currentIndex + slides.length) % slides.length;
-          if (diff === 0) slide.classList.add('active');
-          else if (diff === 1) slide.classList.add('next');
-          else if (diff === 2) slide.classList.add('next-2');
-          else if (diff === slides.length - 1) slide.classList.add('prev');
-        });
+      const bucketName = 'junioreluhu.com';
+      const prefix = 'fambam/';
+      const s3 = new AWS.S3({
+        apiVersion: '2006-03-01',
+        params: { Bucket: bucketName }
+      });
+
+      async function loadSlides() {
+        try {
+          const data = await s3.listObjectsV2({ Prefix: prefix }).promise();
+          
+          const images = data.Contents.filter(item => 
+            item.Key !== prefix && /\.(jpg|jpeg|png|gif)$/i.test(item.Key)
+          );
+
+          renderSlides(images.map(item => item.Key));
+        } catch (err) {
+          console.error('Error loading images from S3, using fallback:', err);
+          // Fallback logic remains here...
+        }
       }
 
-      setInterval(nextSlide, 3000);
+      function renderSlides(imageKeys) {
+        const container = document.getElementById('tm-container');
+        if (!imageKeys || imageKeys.length === 0) return;
+
+        imageKeys.forEach((key, index) => {
+            const img = document.createElement('img');
+            img.src = `https://s3.amazonaws.com/${bucketName}/${key}`;
+            img.alt = 'Family Photo';
+            img.className = 'tm-slide';
+            
+            if (index === 0) img.classList.add('active');
+            else if (index === 1) img.classList.add('next');
+            else if (index === 2) img.classList.add('next-2');
+            else if (index === imageKeys.length - 1) img.classList.add('prev');
+            
+            container.appendChild(img);
+        });
+
+        startSlideshow();
+      }
+
+      function startSlideshow() {
+        const slides = document.querySelectorAll('#tm-container .tm-slide');
+        let currentIndex = 0;
+
+        function nextSlide() {
+          currentIndex = (currentIndex + 1) % slides.length;
+          slides.forEach((slide, index) => {
+            slide.classList.remove('active', 'prev', 'next', 'next-2');
+            let diff = (index - currentIndex + slides.length) % slides.length;
+            if (diff === 0) slide.classList.add('active');
+            else if (diff === 1) slide.classList.add('next');
+            else if (diff === 2) slide.classList.add('next-2');
+            else if (diff === slides.length - 1) slide.classList.add('prev');
+          });
+        }
+
+        setInterval(nextSlide, 3000);
+      }
+
+      loadSlides();
     </script>
   </body>
 </html>

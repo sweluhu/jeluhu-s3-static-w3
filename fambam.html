@@ -44,6 +44,7 @@
         vertical-align: middle;
         border-radius: 8px;
         margin-top: 1rem;
+        image-orientation: from-image;
       }
       footer {
         background-color: #0d0d0d;
@@ -78,6 +79,53 @@
         margin: 2rem 0;
         border: 1px solid #333;
       }
+      /* Time Machine Slideshow Styles */
+      .tm-container {
+        position: relative;
+        width: 100%;
+        max-width: 500px;
+       aspect-ratio: 3/4;
+        margin: 2rem auto;
+        perspective: 1000px;
+        transform-style: preserve-3d;
+      }
+      .tm-slide {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        border-radius: 12px;
+        box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+        border: 1px solid #333;
+        transition: all 1.5s cubic-bezier(0.645, 0.045, 0.355, 1);
+        opacity: 0;
+        transform: translate3d(0, 0, -400px);
+        z-index: 0;
+        max-width: none;
+        image-orientation: from-image;
+      }
+      .tm-slide.active {
+        opacity: 1;
+        transform: translate3d(0, 0, 0);
+        z-index: 10;
+      }
+      .tm-slide.prev {
+        opacity: 0;
+        transform: translate3d(0, 0, 300px);
+        z-index: 11;
+      }
+      .tm-slide.next {
+        opacity: 0.6;
+        transform: translate3d(0, 0, -150px);
+        z-index: 9;
+      }
+      .tm-slide.next-2 {
+        opacity: 0.3;
+        transform: translate3d(0, 0, -300px);
+        z-index: 8;
+      }
     </style>
   </head>
   <body>
@@ -98,16 +146,37 @@
         <div class="professional-card">
           <h2 style="color: #fff; margin-bottom: 1rem;">Fam 😍 Bam</h2>
           <p style="color: #888;">Family moments<br>👩‍❤️👨🏾‍🦱 👧🏽👶🏽</p>
-          <p style="color: #e0e0e0; line-height: 1.6;">Here are some of my favorite family moments captured in photos. My wife and two beautiful daughters are the light of my life.</p>
+          <p style="color: #e0e0e0; line-height: 1.6;">Here are some of my favorite family moments captured in photos. My wife and my two beautiful daughters are the light of my life.</p>
         </div>
-        <img src="https://s3.amazonaws.com/junioreluhu.com/fam.jpg" alt="Family" class="profile-image">
-        <img src="https://s3.us-east-1.amazonaws.com/junioreluhu.com/sophie-celine.jpg" alt="Kids" class="profile-image">
-        <img src="https://s3.amazonaws.com/junioreluhu.com/fam-bam1.jpg" alt="Family and Bam" class="profile-image">
-        <img src="https://s3.amazonaws.com/junioreluhu.com/fam-bam2.JPG" alt="Family and Bam Bam" class="profile-image">
+        <div class="tm-container">
+          <img src="https://s3.amazonaws.com/junioreluhu.com/fam.jpg" alt="Family" class="tm-slide active">
+          <img src="https://s3.us-east-1.amazonaws.com/junioreluhu.com/sophie-celine.jpg" alt="Kids" class="tm-slide next">
+          <img src="https://s3.amazonaws.com/junioreluhu.com/fam-bam1.jpg" alt="Family and Bam" class="tm-slide next-2">
+          <img src="https://s3.amazonaws.com/junioreluhu.com/fam-bam2.JPG" alt="Family and Bam Bam" class="tm-slide">
+          <img src="https://s3.amazonaws.com/junioreluhu.com/fam-bam31.JPG" alt="Family and Bam Bam Bam" class="tm-slide">
+        </div>
       </div>
     </main>
     <footer>
       <tiny>Made in Chicago ❤️</tiny>
     </footer>
+    <script>
+      const slides = document.querySelectorAll('.tm-slide');
+      let currentIndex = 0;
+
+      function nextSlide() {
+        currentIndex = (currentIndex + 1) % slides.length;
+        slides.forEach((slide, index) => {
+          slide.classList.remove('active', 'prev', 'next', 'next-2');
+          let diff = (index - currentIndex + slides.length) % slides.length;
+          if (diff === 0) slide.classList.add('active');
+          else if (diff === 1) slide.classList.add('next');
+          else if (diff === 2) slide.classList.add('next-2');
+          else if (diff === slides.length - 1) slide.classList.add('prev');
+        });
+      }
+
+      setInterval(nextSlide, 3000);
+    </script>
   </body>
 </html>

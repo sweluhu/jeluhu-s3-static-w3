@@ -1,14 +1,58 @@
 # Personal Website (junioreluhu.com)
 
-Source code for the personal static website **junioreluhu.com**, hosted on AWS S3.
+This project hosts the static website for `junioreluhu.com` on AWS.
 
-## Overview
+## Architecture Diagram
 
 This project is a static website serving as a personal portfolio and gallery. It's built with vanilla HTML, CSS, and JavaScript, and leverages various AWS services for hosting, content delivery, security, and authentication. The site features a dynamic "E-Mobility" section that showcases various electric vehicles through a responsive image mosaic and video gallery.
 
-## Live Site
+## Mermaid Diagram
 
-You can visit the live site at: [https://www.junioreluhu.com/](https://www.junioreluhu.com/)
+```mermaid
+---
+id: 9c78e184-10ba-49e8-b4b6-b8173dfcce98
+---
+graph TD
+    User((User))
+    
+    subgraph "Edge Location"
+        CF[CloudFront]
+        ACM[ACM Certificate]
+    end
+    
+    subgraph "AWS Cloud"
+        R53[Route 53]
+        S3["S3 Bucket<br/>(Static Content)"]
+        
+        subgraph "Backend"
+            Cognito["Cognito<br/>(Auth)"]
+            Lambda[Lambda Function]
+            SSM[Parameter Store]
+            CW["CloudWatch<br/>Log Groups"]
+        end
+        
+        subgraph "Email Service"
+            SES["SES<br/>(Email)"]
+            SNS["SNS<br/>(Notifications)"]
+        end
+    end
+
+    User -->|DNS Resolution| R53
+    User -->|HTTPS| CF
+    CF -.->|SSL| ACM
+    CF -->|Origin| S3
+    
+    User -->|Auth| Cognito
+    User -->|API Request| Lambda
+    
+    Lambda -->|Read Config| SSM
+    Lambda -->|Logs| CW
+    Lambda -->|Send Email| SES
+    Lambda -->|Publish| SNS
+```
+
+<!-- ![serverless website](serverless_web_app.png) -->
+
 
 ## Features
 
@@ -60,6 +104,7 @@ This project leverages the following technologies and services:
   - [Amazon Simple Email Service (SES)](https://aws.amazon.com/ses/) for sending emails.
 - **Infrastructure as Code**:
   - The AWS infrastructure is defined and managed using [Terraform](https://www.terraform.io/).
+  
 
 ## Local Development
 

@@ -1,0 +1,40 @@
+---
+id: 9c78e184-10ba-49e8-b4b6-b8173dfcce98
+---
+graph TD
+    User((User))
+    
+    subgraph "Edge Location"
+        CF[CloudFront]
+        ACM[ACM Certificate]
+    end
+    
+    subgraph "AWS Cloud"
+        R53[Route 53]
+        S3["S3 Bucket<br/>(Static Content)"]
+        
+        subgraph "Backend"
+            Cognito["Cognito<br/>(Auth)"]
+            Lambda[Lambda Function]
+            SSM[Parameter Store]
+            CW["CloudWatch<br/>Log Groups"]
+        end
+        
+        subgraph "Email Service"
+            SES["SES<br/>(Email)"]
+            SNS["SNS<br/>(Notifications)"]
+        end
+    end
+
+    User -->|DNS Resolution| R53
+    User -->|HTTPS| CF
+    CF -.->|SSL| ACM
+    CF -->|Origin| S3
+    
+    User -->|Auth| Cognito
+    User -->|API Request| Lambda
+    
+    Lambda -->|Read Config| SSM
+    Lambda -->|Logs| CW
+    Lambda -->|Send Email| SES
+    Lambda -->|Publish| SNS

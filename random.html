@@ -90,6 +90,7 @@
         box-shadow: 0 0 20px rgba(57, 255, 20, 0.4);
       }
     </style>
+    <script src="https://sdk.amazonaws.com/js/aws-sdk-2.1259.0.min.js"></script>
   </head>
   <body>
     <header>
@@ -115,47 +116,96 @@
         const meta = document.getElementById('meta');
         const refreshBtn = document.getElementById('refreshBtn');
 
+        // AWS Configuration
+        AWS.config.update({
+          region: 'us-east-1',
+          credentials: new AWS.CognitoIdentityCredentials({
+            IdentityPoolId: 'us-east-1:17e37220-fa99-45b9-80b1-4faaf19be9cd'
+          })
+        });
+
+        async function extractImageId(finalUrl, headers) {
+          let id = headers.get('picsum-id');
+          if (!id) {
+            const match = finalUrl.match(/\/id\/(\d+)\//);
+            if (match) id = match[1];
+          }
+          return id;
+        }
+
+        async function enrichWithUnsplashMetadata(info) {
+          if (!info.url || !info.url.includes('unsplash.com')) return;
+          
+          try {
+            const unsplashId = info.url.split('/').pop();
+            const lambda = new AWS.Lambda();
+            const params = {
+              FunctionName: 'getUnsplashMetadata',
+              InvocationType: 'RequestResponse',
+              Payload: JSON.stringify({ id: unsplashId })
+            };
+            const result = await lambda.invoke(params).promise();
+            const metadata = JSON.parse(result.Payload);
+
+            if (metadata && !metadata.errorMessage) {
+              if (metadata.location) {
+                info.location = [metadata.location.city, metadata.location.country].filter(Boolean).join(', ');
+              }
+              if (metadata.exif) {
+                info.camera = [metadata.exif.make, metadata.exif.model].filter(Boolean).join(' ');
+              }
+            }
+          } catch (e) {
+            console.warn('Failed to fetch Unsplash metadata', e);
+          }
+        }
+
+        function renderMetadata(info) {
+          meta.innerHTML = `
+            <p>✍️ Author: <a href="${info.url}" target="_blank" rel="noopener noreferrer" style="color:#39ff14;">${info.author}</a></p>
+            ${info.location ? `<p>📍 Location: ${info.location}</p>` : ''}
+            ${info.camera ? `<p>📷 Shot on: ${info.camera}</p>` : ''}
+            <p><a href="${info.download_url}" target="_blank" rel="noopener noreferrer" style="color:#39ff14;">Download: ${info.width} × ${info.height}</a></p>
+          `;
+        }
+
+        async function fetchImageInfo(id) {
+          if (!id) {
+            meta.textContent = 'Could not determine image ID.';
+            return null;
+          }
+
+          const infoRes = await fetch(`https://picsum.photos/id/${id}/info`);
+          if (!infoRes.ok) {
+            meta.textContent = 'Could not fetch info for ID: ' + id;
+            return null;
+          }
+
+          const info = await infoRes.json();
+          await enrichWithUnsplashMetadata(info);
+          return info;
+        }
+
         async function loadRandomImage() {
           meta.textContent = 'Loading metadata...';
           img.style.opacity = '0.5';
           
-          // Use a unique URL to prevent caching of the redirect
           const targetUrl = 'https://picsum.photos/600?random=' + Date.now();
 
           try {
-            // Fetch to get the final URL and ID. 
-            // Using GET instead of HEAD as it's more reliable for redirects/CORS in some envs.
             const res = await fetch(targetUrl);
             const finalUrl = res.url;
             
-            // Set image source to the resolved URL so it matches
             img.src = finalUrl;
             img.onload = () => img.style.opacity = '1';
 
-            // Get ID from header or URL
-            let id = res.headers.get('picsum-id');
-            if (!id) {
-              const match = finalUrl.match(/\/id\/(\d+)\//);
-              if (match) id = match[1];
-            }
-
-            if (id) {
-              const infoRes = await fetch(`https://picsum.photos/id/${id}/info`);
-              if (infoRes.ok) {
-                const info = await infoRes.json();
-                meta.innerHTML = `
-                  <p>Author: <a href="${info.url}" target="_blank" rel="noopener noreferrer" style="color:#39ff14;">${info.author}</a></p>
-                  <p>Original size: ${info.width} × ${info.height}</p>
-                  <p><a href="${info.download_url}" target="_blank" rel="noopener noreferrer" style="color:#39ff14;">Download Original</a></p>
-                `;
-              } else {
-                meta.textContent = 'Could not fetch info for ID: ' + id;
-              }
-            } else {
-              meta.textContent = 'Could not determine image ID.';
+            const id = await extractImageId(finalUrl, res.headers);
+            const info = await fetchImageInfo(id);
+            
+            if (info) {
+              renderMetadata(info);
             }
           } catch (err) {
-            // Fallback if fetch fails (e.g. CORS)
             console.error('Metadata fetch failed:', err);
             meta.textContent = 'Metadata unavailable (CORS or network error).';
             img.src = targetUrl;

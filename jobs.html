@@ -1,0 +1,661 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&display=swap" rel="stylesheet">
+    <title>Job Hunter: Ghost vs. Real Opportunities</title>
+    <style>
+        body {
+            font-family: "Menlo", "Consolas", "Monaco", monospace;
+            line-height: 1.6;
+            margin: 0;
+            background-color: #000000;
+            color: #00ff41;
+            text-shadow: 0 0 2px rgba(0, 255, 65, 0.5);
+            display: flex;
+            flex-direction: column;
+            height: 100vh;
+            overflow: hidden; /* Prevents the body itself from scrolling */
+        }
+
+        .page-header {
+            text-align: center;
+            padding: 20px;
+            margin-bottom: 0;
+        }
+
+        .page-header h1 {
+            color: #00ff41;
+            font-weight: normal;
+            letter-spacing: 2px;
+            text-shadow: 0 0 5px #00ff41;
+        }
+
+        .page-header p {
+            color: #99ffb4;
+        }
+
+        .news-ticker-container {
+            width: auto;
+            background-color: #0d0d0d;
+            border: 1px solid #00ff41;
+            border-radius: 8px;
+            padding: 10px 0;
+            margin: 20px 20px 0;
+            overflow: hidden;
+            white-space: nowrap;
+            box-sizing: border-box;
+        }
+
+        .news-ticker {
+            display: inline-block;
+            padding-left: 100%;
+            animation: ticker-scroll 80s linear infinite;
+        }
+
+        @keyframes ticker-scroll {
+            0% {
+                transform: translateX(0);
+            }
+            100% {
+                transform: translateX(-100%);
+            }
+        }
+
+        .news-item {
+            display: inline-flex;
+            padding: 0 1.5rem;
+            align-items: center;
+            text-decoration: none;
+            font-weight: bold;
+            transition: text-shadow 0.2s;
+        }
+
+        .news-item:hover {
+            text-shadow: 0 0 8px currentColor;
+        }
+
+        .news-icon {
+            width: 16px;
+            height: 16px;
+            margin-right: 8px;
+            border-radius: 3px;
+        }
+
+        .news-separator {
+            color: #00ff41;
+            margin: 0 0.5rem;
+        }
+
+        .user-info {
+            text-align: center;
+            color: #00ff41;
+            margin-top: 10px;
+            font-size: 0.9rem;
+        }
+
+        .container.initial-state {
+            justify-content: center;
+        }
+
+        .container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 30px;
+            flex-grow: 1; /* Allows the main content to fill available space */
+            overflow: hidden; /* Prevent main area from scrolling */
+            padding: 0 20px 20px;
+        }
+
+        #job-results {
+            display: flex;
+            flex-direction: column;
+            width: 100%;
+            flex-grow: 1;
+            overflow: hidden; /* This is so the child .column can scroll */
+        }
+
+        .tab {
+            overflow: hidden;
+            background-color: #0d0d0d;
+            border-radius: 16px 16px 0 0;
+            margin: 20px 0 0;
+            display: flex;
+            flex-wrap: wrap;
+            flex-shrink: 0;
+            border-bottom: 1px solid #333;
+        }
+        .tab button {
+            background-color: inherit;
+            float: left;
+            border: none;
+            outline: none;
+            cursor: pointer;
+            padding: 14px 16px;
+            transition: 0.3s;
+            font-size: 1rem;
+            color: #888;
+            flex: 1;
+            font-family: inherit;
+            font-weight: bold;
+            min-width: 120px;
+        }
+        .tab button:hover {
+            background-color: #222;
+            color: #39ff14;
+        }
+        .tab button.active {
+            background-color: rgba(255, 255, 255, 0.05);
+            color: #39ff14;
+        }
+        .tabcontent {
+            display: none;
+        }
+
+        .column {
+            flex-grow: 1; /* Make column grow to fill space in #job-results */
+            min-width: 320px;
+            overflow-y: auto;
+            padding-right: 15px;
+            padding-bottom: 20px;
+            background: rgba(255, 255, 255, 0.05);
+            padding: 2rem;
+            border: 1px solid #333;
+            border-top: none;
+        }
+
+        .column h2 {
+            text-align: center;
+            border-bottom: 1px solid #00ff41;
+            padding-bottom: 10px;
+            margin-bottom: 20px;
+            font-weight: normal;
+            letter-spacing: 1px;
+        }
+
+        /* Custom scrollbar for the matrix theme */
+        .column::-webkit-scrollbar {
+            width: 8px;
+        }
+        .column::-webkit-scrollbar-track {
+            background: #0d0d0d;
+        }
+        .column::-webkit-scrollbar-thumb {
+            background-color: #00ff41;
+            border: 1px solid #000;
+        }
+
+        .job-card {
+            background-color: rgba(0, 20, 0, 0.5);
+            border: 1px solid #00ff41;
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 20px;
+            box-shadow: 0 0 10px rgba(0, 255, 65, 0.2);
+            transition: transform 0.2s, box-shadow 0.2s;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .job-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 0 15px rgba(0, 255, 65, 0.5);
+        }
+
+        .job-card h3 {
+            margin-top: 0;
+            color: #ffffff;
+            text-shadow: 0 0 3px #fff;
+        }
+
+        .job-card p {
+            margin: 5px 0;
+        }
+
+        .job-card p > strong {
+            color: #99ffb4; /* Lighter green for labels */
+        }
+
+        .job-card.ghost {
+            border-left: 5px solid #e74c3c; /* Red for ghost jobs */
+            border-color: #e74c3c;
+            box-shadow: 0 0 10px rgba(231, 76, 60, 0.3);
+        }
+        .job-card.ghost:hover {
+            box-shadow: 0 0 15px rgba(231, 76, 60, 0.6);
+        }
+
+        .job-card.recommended {
+            border-left: 5px solid #2ecc71; /* Green for recommended jobs */
+            border-color: #2ecc71;
+        }
+
+        .job-card .reason, .job-card .fit {
+            font-style: italic;
+            color: #888;
+            margin-top: 10px;
+            font-size: 0.9em;
+            flex-grow: 1;
+        }
+
+        .job-card a {
+            color: #3498db;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        .job-card a:hover {
+            text-decoration: underline;
+            color: #5dade2;
+            text-shadow: 0 0 5px #3498db;
+        }
+
+        .card-actions {
+            margin-top: auto;
+            padding-top: 10px;
+        }
+
+        .card-actions p {
+            margin: 0 0 5px 0;
+        }
+
+        footer {
+            background-color: #0d0d0d;
+            color: white;
+            /* margin-top is removed to allow the footer to stick to the bottom */
+            font-size: 10px;
+            padding: 1rem;
+            text-align: center;
+            flex-shrink: 0; /* Prevents the footer from shrinking */
+        }
+
+        footer .disclaimer {
+            font-size: 1.2em;
+            color: #888;
+            margin-bottom: 10px;
+        }
+
+        .hunt-button-container {
+            padding: 20px;
+            text-align: center;
+        }
+        .matrix-button {
+            background: transparent;
+            border: 1px solid #00ff41;
+            color: #00ff41;
+            padding: 1rem 2.5rem;
+            cursor: pointer;
+            transition: all 0.2s;
+            font-family: inherit;
+            font-size: 1.2rem;
+            letter-spacing: 1px;
+            text-shadow: 0 0 5px #00ff41;
+            border-radius: 8px;
+        }
+
+        .matrix-button:hover {
+            background: #00ff41;
+            color: #000;
+            box-shadow: 0 0 15px #00ff41;
+            text-shadow: none;
+        }
+
+        .matrix-button.secondary {
+            border-color: #e74c3c;
+            color: #e74c3c;
+            text-shadow: 0 0 5px #e74c3c;
+        }
+
+        .matrix-button.secondary:hover {
+            background: #e74c3c;
+            color: #000;
+            box-shadow: 0 0 15px #e74c3c;
+        }
+
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.85);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+        }
+
+        .modal-content {
+            background: #0d0d0d;
+            border: 1px solid #00ff41;
+            padding: 2rem 3rem;
+            width: 90%;
+            max-width: 550px;
+            box-shadow: 0 0 25px rgba(0, 255, 65, 0.3);
+        }
+
+        .modal-content h2 {
+            text-align: center;
+            margin-top: 0;
+            margin-bottom: 2rem;
+            font-weight: normal;
+        }
+
+        .form-group {
+            margin-bottom: 1.2rem;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            color: #99ffb4;
+        }
+
+        .form-group input {
+            width: 100%;
+            background: rgba(0, 20, 0, 0.8);
+            border: 1px solid #00ff41;
+            color: #00ff41;
+            padding: 0.75rem;
+            font-family: inherit;
+            box-sizing: border-box;
+        }
+
+        .form-actions {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 2.5rem;
+        }
+
+        .hidden {
+            display: none !important;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="news-ticker-container">
+        <div class="news-ticker">
+            <a href="#" class="news-item" style="color: #ff5733;"><img class="news-icon" src="https://via.placeholder.com/16/DB4437/FFFFFF?text=G" alt="Google"> Google lays off 200+ from 'core' teams...</a><span class="news-separator">|</span>
+            <a href="#" class="news-item" style="color: #f4d03f;"><img class="news-icon" src="https://via.placeholder.com/16/000000/FFFFFF?text=A" alt="AI"> AI could replace 80% of human jobs...</a><span class="news-separator">|</span>
+            <a href="#" class="news-item" style="color: #33c1ff;"><img class="news-icon" src="https://via.placeholder.com/16/CC0000/FFFFFF?text=T" alt="Tesla"> Tesla lays off nearly 300 more workers...</a><span class="news-separator">|</span>
+            <a href="#" class="news-item" style="color: #ff33a1;"><img class="news-icon" src="https://via.placeholder.com/16/000000/FFFFFF?text=W" alt="Writers Guild"> Writers Guild sounds alarm on AI replacing creative jobs...</a><span class="news-separator">|</span>
+            <a href="#" class="news-item" style="color: #33ff57;"><img class="news-icon" src="https://via.placeholder.com/16/00A4EF/FFFFFF?text=M" alt="Microsoft"> Microsoft cuts 1,000 jobs in Azure and Mixed Reality units...</a><span class="news-separator">|</span>
+            <a href="#" class="news-item" style="color: #ff5733;"><img class="news-icon" src="https://via.placeholder.com/16/DB4437/FFFFFF?text=G" alt="Google"> Google lays off 200+ from 'core' teams...</a><span class="news-separator">|</span>
+            <a href="#" class="news-item" style="color: #f4d03f;"><img class="news-icon" src="https://via.placeholder.com/16/000000/FFFFFF?text=A" alt="AI"> AI could replace 80% of human jobs...</a><span class="news-separator">|</span>
+            <a href="#" class="news-item" style="color: #33c1ff;"><img class="news-icon" src="https://via.placeholder.com/16/CC0000/FFFFFF?text=T" alt="Tesla"> Tesla lays off nearly 300 more workers...</a><span class="news-separator">|</span>
+            <a href="#" class="news-item" style="color: #ff33a1;"><img class="news-icon" src="https://via.placeholder.com/16/000000/FFFFFF?text=W" alt="Writers Guild"> Writers Guild sounds alarm on AI replacing creative jobs...</a><span class="news-separator">|</span>
+            <a href="#" class="news-item" style="color: #33ff57;"><img class="news-icon" src="https://via.placeholder.com/16/00A4EF/FFFFFF?text=M" alt="Microsoft"> Microsoft cuts 1,000 jobs in Azure and Mixed Reality units...</a>
+        </div>
+    </div>
+
+    <main id="main-content-area" class="container initial-state">
+        <div class="page-header">
+            <h1>Job Hunter</h1>
+            <p>Separating the signal from the noise. <br>Avoid ghost jobs and find real, <br>high-priority roles that match your portfolio.</p>
+            <div class="user-info">
+                <span id="visitor-location">Locating...</span> | <span id="visitor-time">--:--</span> | <span id="visitor-weather">--°C</span>
+            </div>
+        </div>
+        <div class="hunt-button-container" id="hunt-button-wrapper">
+            <button id="hunt-button" class="matrix-button">Hunt 🎯</button>
+        </div>
+
+        <div id="job-results" class="hidden">
+            <div class="tab">
+                <button class="tablinks active" onclick="openTab(event, 'GhostJobs')">Ghost Jobs 👻</button>
+                <button class="tablinks" onclick="openTab(event, 'RealJobs')">Real Jobs ✅</button>
+            </div>
+            <div id="GhostJobs" class="column tabcontent" style="display: block;">
+                <div class="job-card ghost">
+                    <h3>Senior Frontend Developer (Remote)</h3>
+                    <p><strong>Company:</strong> DataHarvesters Inc.</p>
+                    <p><strong>Recruiter:</strong> Jane Doe</p>
+                    <p><strong>Posted:</strong> 125 days ago</p>
+                    <p class="reason">This posting is very old and has a generic description, suggesting it may be used for resume collection.</p>
+                </div>
+
+                <div class="job-card ghost">
+                    <h3>Full-Stack Engineer</h3>
+                    <p><strong>Company:</strong> Pipeline Corp.</p>
+                    <p><strong>Recruiter:</strong> John Smith</p>
+                    <p><strong>Posted:</strong> 92 days ago</p>
+                    <p class="reason">The job description is vague and has been reposted multiple times across different boards without any changes.</p>
+                </div>
+
+                <div class="job-card ghost">
+                    <h3>Cloud Solutions Architect</h3>
+                    <p><strong>Company:</strong> Talent Pool LLC</p>
+                    <p><strong>Recruiter:</strong> Emily White</p>
+                    <p><strong>Posted:</strong> 150 days ago</p>
+                    <p class="reason">The company primarily offers recruitment services and the posting lacks specific project details.</p>
+                </div>
+
+                <div class="job-card ghost">
+                    <h3>DevOps Engineer</h3>
+                    <p><strong>Company:</strong> EverGreen Postings</p>
+                    <p><strong>Recruiter:</strong> Michael Brown</p>
+                    <p><strong>Posted:</strong> 180+ days ago</p>
+                    <p class="reason">This position has been open for over 6 months, indicating it's likely not an active hiring priority.</p>
+                </div>
+
+                <div class="job-card ghost">
+                    <h3>Lead Software Engineer</h3>
+                    <p><strong>Company:</strong> Generic Tech Co.</p>
+                    <p><strong>Recruiter:</strong> "Hiring Manager"</p>
+                    <p><strong>Posted:</strong> 110 days ago</p>
+                    <p class="reason">No specific recruiter is listed and the company has no recent activity or news about expansion.</p>
+                </div>
+
+            </div>
+
+            <div id="RealJobs" class="column tabcontent">
+                <div class="job-card recommended">
+                    <h3>Urgent: React Native Developer</h3>
+                    <p><strong>Company:</strong> InnovateNow LLC</p>
+                    <p class="fit"><strong>Fit:</strong> Your portfolio shows strong experience with React Native and mobile app deployment, which are key requirements.</p>
+                    <div class="card-actions">
+                        <a href="mailto:hr@innovatenow.dev">Email Recruiter</a> | <a href="#" target="_blank">Apply Here</a>
+                    </div>
+                </div>
+
+                <div class="job-card recommended">
+                    <h3>Senior AWS Cloud Engineer</h3>
+                    <p><strong>Company:</strong> CloudFirst Solutions</p>
+                    <p class="fit"><strong>Fit:</strong> Your Jenkins and Kubernetes experience mentioned in your portfolio is a perfect match for this role's CI/CD needs.</p>
+                    <div class="card-actions">
+                        <a href="mailto:jobs@cloudfirst.io">Email HR</a> | <a href="#" target="_blank">Apply via LinkedIn</a>
+                    </div>
+                </div>
+
+                <div class="job-card recommended">
+                    <h3>Backend Engineer (Node.js)</h3>
+                    <p><strong>Company:</strong> ScaleFast Startups</p>
+                    <p class="fit"><strong>Fit:</strong> This role requires expertise in building scalable microservices, a skill demonstrated in your portfolio projects.</p>
+                    <div class="card-actions">
+                        <a href="mailto:careers@scalefast.co">Email Careers</a> | <a href="#" target="_blank">Apply Here</a>
+                    </div>
+                </div>
+
+                <div class="job-card recommended">
+                    <h3>UI/UX-Focused Frontend Developer</h3>
+                    <p><strong>Company:</strong> DesignDriven Tech</p>
+                    <p class="fit"><strong>Fit:</strong> Your eye for design and component-based architecture in your portfolio aligns with their product philosophy.</p>
+                    <div class="card-actions">
+                        <a href="mailto:s.jones@designdriven.tech">Contact Sarah Jones</a> | <a href="#" target="_blank">Apply Here</a>
+                    </div>
+                </div>
+
+                <div class="job-card recommended">
+                    <h3>Kubernetes Platform Engineer</h3>
+                    <p><strong>Company:</strong> InfraWorks</p>
+                    <p class="fit"><strong>Fit:</strong> This urgent role needs a PKS expert. Your runbook on Jenkins slaves for PKS makes you an ideal candidate.</p>
+                    <div class="card-actions">
+                        <p><strong>Phone:</strong> (555) 123-4567 (Ask for Dave)</p>
+                        <a href="#" target="_blank">Apply Here</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <div id="hunt-modal" class="modal-overlay hidden">
+        <div class="modal-content">
+            <h2>Job Hunter</h2>
+            <form id="hunt-form">
+                <div class="form-group">
+                    <label for="first-name">First Name</label>
+                    <input type="text" id="first-name" name="first-name" required>
+                </div>
+                <div class="form-group">
+                    <label for="last-name">Last Name</label>
+                    <input type="text" id="last-name" name="last-name" required>
+                </div>
+                <div class="form-group">
+                    <label for="phone">Phone Number</label>
+                    <input type="tel" id="phone" name="phone">
+                </div>
+                <div class="form-group">
+                    <label for="email">Email</label>
+                    <input type="email" id="email" name="email" required>
+                </div>
+                <div class="form-group">
+                    <label for="job-title">Job Title</label>
+                    <input type="text" id="job-title" name="job-title" required>
+                </div>
+                <div class="form-group">
+                    <label for="resume">Upload Resume</label>
+                    <input type="file" id="resume" name="resume" accept=".pdf,.doc,.docx" required>
+                </div>
+                <div class="form-actions">
+                    <button type="button" id="cancel-hunt-button" class="matrix-button secondary">Cancel</button>
+                    <button type="submit" class="matrix-button">Find Job</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <footer>
+        <p class="disclaimer">Disclaimer: We will <strong>NEVER</strong> persist or sell your personal information.</p>
+        <tiny>Made in Pau ❤️</tiny>
+    </footer>
+
+    <script>
+      function getWeatherIcon(weatherCode) {
+          const icons = {
+              0: '☀️', // Clear sky
+              1: '🌤️', // Mainly clear
+              2: '⛅', // Partly cloudy
+              3: '☁️', // Overcast
+              45: '🌫️', // Fog
+              48: '🌫️', // Depositing rime fog
+              51: '🌦️', // Drizzle: Light
+              53: '🌦️', // Drizzle: Moderate
+              55: '🌦️', // Drizzle: Dense
+              56: '🥶', // Freezing Drizzle: Light
+              57: '🥶', // Freezing Drizzle: Dense
+              61: '🌧️', // Rain: Slight
+              63: '🌧️', // Rain: Moderate
+              65: '🌧️', // Rain: Heavy
+              66: '🥶', // Freezing Rain: Light
+              67: '🥶', // Freezing Rain: Heavy
+              71: '🌨️', // Snow fall: Slight
+              73: '🌨️', // Snow fall: Moderate
+              75: '🌨️', // Snow fall: Heavy
+              77: '🌨️', // Snow grains
+              80: '🌦️', // Rain showers: Slight
+              81: '🌦️', // Rain showers: Moderate
+              82: '⛈️', // Rain showers: Violent
+              85: '🌨️', // Snow showers: Slight
+              86: '🌨️', // Snow showers: Heavy
+              95: '⛈️', // Thunderstorm
+              96: '⛈️', // Thunderstorm with hail
+              99: '⛈️'  // Thunderstorm with heavy hail
+          };
+          return icons[weatherCode] || '';
+      }
+
+      function openTab(evt, tabName) {
+        var i, tabcontent, tablinks;
+        var activeTab = document.querySelector('.tablinks.active');
+        if (activeTab) {
+            activeTab.className = activeTab.className.replace(" active", "");
+        }
+        tabcontent = document.getElementsByClassName("tabcontent");
+        for (i = 0; i < tabcontent.length; i++) {
+          tabcontent[i].style.display = "none";
+        }
+        document.getElementById(tabName).style.display = "block";
+        evt.currentTarget.className += " active";
+      }
+
+      document.addEventListener('DOMContentLoaded', function() {
+        const huntButton = document.getElementById('hunt-button');
+        const huntModal = document.getElementById('hunt-modal');
+        const cancelHuntButton = document.getElementById('cancel-hunt-button');
+        const huntForm = document.getElementById('hunt-form');
+        const jobResults = document.getElementById('job-results');
+        const huntButtonWrapper = document.getElementById('hunt-button-wrapper');
+
+        // Show modal
+        huntButton.addEventListener('click', () => {
+            huntModal.classList.remove('hidden');
+        });
+
+        // Hide modal on cancel
+        cancelHuntButton.addEventListener('click', () => {
+            huntModal.classList.add('hidden');
+        });
+
+        // Hide modal on overlay click
+        huntModal.addEventListener('click', (e) => {
+            if (e.target === huntModal) {
+                huntModal.classList.add('hidden');
+            }
+        });
+
+        // Handle form submission
+        huntForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            // In a real app, you'd process form data here
+            huntModal.classList.add('hidden');
+            // huntButtonWrapper.classList.add('hidden');
+            document.getElementById('main-content-area').classList.remove('initial-state');
+
+            jobResults.classList.remove('hidden');
+            
+            // Ensure the default tab is displayed correctly
+            document.getElementById('GhostJobs').style.display = 'block';
+            document.getElementById('RealJobs').style.display = 'none';
+            document.querySelector('.tablinks').classList.add('active');
+        });
+
+            // Visitor Info
+            (async function() {
+                const locEl = document.getElementById('visitor-location');
+                const timeEl = document.getElementById('visitor-time');
+                const weatherEl = document.getElementById('visitor-weather');
+
+                setInterval(() => {
+                    timeEl.textContent = new Date().toLocaleString();
+                }, 1000);
+
+                try {
+                    const ipRes = await fetch('https://ipinfo.io/json');
+                    const ipData = await ipRes.json();
+                    locEl.textContent = `${ipData.city}, ${ipData.country}`;
+                    const [lat, lon] = ipData.loc.split(',');
+                    const weatherRes = await fetch(`https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&current_weather=true`);
+                    const weatherData = await weatherRes.json();
+                    const weatherIcon = getWeatherIcon(weatherData.current_weather.weathercode);
+                    weatherEl.textContent = `${weatherData.current_weather.temperature}°C ${weatherIcon}`;
+                } catch (e) {
+                    console.error('Error fetching visitor info:', e);
+                }
+            })();
+      });
+    </script>
+</body>
+</html>

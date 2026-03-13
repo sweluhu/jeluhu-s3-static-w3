@@ -292,6 +292,8 @@
 
       <div style="text-align: center; margin: 2rem 0;">
         <a href="#" class="resume-btn" onclick="showCerts(); return false;">View Certifications 📜</a>
+        <a href="#" class="resume-btn" onclick="showJobHunter(); return false;">Job Hunter 🎯</a>
+        <a href="#" class="resume-btn" onclick="showPoisonApp(); return false;">Poison App ☠️</a>
       </div>
 
       <p style="color: #888; font-style: italic; font-size: 0.7rem; max-width: 800px; margin: 1rem auto;">
@@ -327,6 +329,34 @@
           </div>
         </div>
       </div>
+
+      <!-- Job Hunter Modal -->
+      <div id="jobHunterModal" class="modal">
+        <div class="modal-content">
+          <span class="close-modal" onclick="closeJobHunterModal()">&times;</span>
+          <h3 style="color: #39ff14; border-bottom: 1px solid #333; padding-bottom: 0.5rem; margin-top: 0;">Job Hunter 🎯</h3>
+          <p>
+            This page helps separate the signal from the noise, avoiding ghost jobs to find real, high-priority roles that match your portfolio.
+          </p>
+          <div style="text-align: center; margin-top: 20px;">
+            <a href="#" class="resume-btn" onclick="window.open('jobs.html', '_blank'); return false;">Hunt now 🎯</a>
+          </div>
+        </div>
+      </div>
+
+      <!-- Poison App Modal -->
+      <div id="poisonAppModal" class="modal">
+        <div class="modal-content">
+          <span class="close-modal" onclick="closePoisonAppModal()">&times;</span>
+          <h3 style="color: #39ff14; border-bottom: 1px solid #333; padding-bottom: 0.5rem; margin-top: 0;">Poison App ☠️</h3>
+          <p>
+            Poison App is an iOS app that uses your camera to scan any product on supermarket shelves and report the concentration of unsafe and unhealthy ingredients.
+          </p>
+          <p>
+            The goal is to incorporate it into Meta AI or other similar platforms so that it can be used with AI glasses.
+          </p>
+        </div>
+      </div>
     </main>
     <footer>
       <tiny>Made in Chicago ❤️</tiny>
@@ -351,10 +381,30 @@
       function closeModal() {
         document.getElementById("certModal").style.display = "none";
       }
+      function showJobHunter() {
+        document.getElementById("jobHunterModal").style.display = "block";
+      }
+      function closeJobHunterModal() {
+        document.getElementById("jobHunterModal").style.display = "none";
+      }
+      function showPoisonApp() {
+        document.getElementById("poisonAppModal").style.display = "block";
+      }
+      function closePoisonAppModal() {
+        document.getElementById("poisonAppModal").style.display = "none";
+      }
       window.onclick = function(event) {
-        var modal = document.getElementById("certModal");
-        if (event.target == modal) {
-          modal.style.display = "none";
+        var certModal = document.getElementById("certModal");
+        var jobHunterModal = document.getElementById("jobHunterModal");
+        var poisonAppModal = document.getElementById("poisonAppModal");
+        if (event.target == certModal) {
+          certModal.style.display = "none";
+        }
+        if (event.target == jobHunterModal) {
+          jobHunterModal.style.display = "none";
+        }
+        if (event.target == poisonAppModal) {
+          poisonAppModal.style.display = "none";
         }
       }
     </script>

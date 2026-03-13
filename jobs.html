@@ -3,6 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Add your Google Client ID here <script src="https://accounts.google.com/gsi/client" async></script> -->
+    <meta name="google-signin-client_id" content="461084380926-02bl6n53fnnd0esajrta612omdu2sh8r.apps.googleusercontent.com">
+    <script src="https://apis.google.com/js/platform.js?onload=initGoogleSignIn" async defer></script>
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&display=swap" rel="stylesheet">
     <title>Job Hunter: Ghost vs. Real Opportunities</title>
     <style>
@@ -399,8 +402,14 @@
                 <span id="visitor-location">Locating...</span> | <span id="visitor-time">--:--</span> | <span id="visitor-weather">--°C</span>
             </div>
         </div>
-        <div class="hunt-button-container" id="hunt-button-wrapper">
+        <div class="hunt-button-container" id="hunt-button-wrapper" style="display: flex; justify-content: center; align-items: center; gap: 20px; flex-wrap: wrap;">
             <button id="hunt-button" class="matrix-button">Hunt 🎯</button>
+            <div style="font-weight: bold; color: #99ffb4;">OR</div>
+            <!-- Custom Google Sign-in button -->
+            <button id="google-signin-button" class="matrix-button" style="display: inline-flex; align-items: center; justify-content: center; padding: 1rem 1.5rem;">
+                <img src="data:image/svg+xml,%3csvg width='24' height='24' viewBox='0 0 18 18' xmlns='http://www.w3.org/2000/svg'%3e%3cpath fill='currentColor' d='M17.64,9.2045c0-.6382-.0573-1.2518-.1646-1.8409H9.1818v3.4818h4.7918c-.2055,1.125-.8445,2.0782-1.7955,2.7218v2.2582h2.9082C16.6582,14.2518,17.64,11.9455,17.64,9.2045Z'/%3e%3cpath fill='currentColor' d='M9.1818,18c2.43,0,4.4673-.8055,5.9564-2.1818l-2.9082-2.2582c-.8055,.5409-1.8409,.8682-3.0482,.8682-2.3455,0-4.3273-1.5818-5.0355-3.71h-3.0073v2.3318C2.6118,15.3336,5.5945,18,9.1818,18Z'/%3e%3cpath fill='currentColor' d='M4.1464,10.71c-.1818-.5409-.2827-1.1164-.2827-1.71s.1009-1.1691,.2827-1.71V4.9582H1.1391C.4218,6.2736,0,7.6836,0,9.2045s.4218,2.9309,1.1391,4.2464L4.1464,10.71Z'/%3e%3cpath fill='currentColor' d='M9.1818,3.6c1.3227,0,2.5082,.4555,3.44,1.3455l2.5818-2.5818C13.6491,.8873,11.6118,0,9.1818,0,5.5945,0,2.6118,2.6664,1.1391,6.25L4.1464,8.5818C4.8545,6.45,6.8364,3.6,9.1818,3.6Z'/%3e%3c/svg%3e" alt="Google icon" style="width: 20px; height: 20px; margin-right: 12px;">
+                <span>Sign in with Google</span>
+            </button>
         </div>
 
         <div id="job-results" class="hidden">
@@ -621,7 +630,7 @@
             e.preventDefault();
             // In a real app, you'd process form data here
             huntModal.classList.add('hidden');
-            // huntButtonWrapper.classList.add('hidden');
+            huntButtonWrapper.classList.add('hidden');
             document.getElementById('main-content-area').classList.remove('initial-state');
 
             jobResults.classList.remove('hidden');
@@ -656,6 +665,52 @@
                 }
             })();
       });
+
+      function initGoogleSignIn() {
+        gapi.load('auth2', function() {
+            const auth2 = gapi.auth2.init({
+                client_id: '461084380926-02bl6n53fnnd0esajrta612omdu2sh8r.apps.googleusercontent.com',
+                cookiepolicy: 'single_host_origin',
+            });
+            attachSignin(document.getElementById('google-signin-button'), auth2);
+        });
+      }
+
+      function attachSignin(element, auth2) {
+          auth2.attachClickHandler(element, {},
+              onSignIn,
+              function(error) {
+                  alert('Sign-in failed: ' + JSON.stringify(error, undefined, 2));
+              }
+          );
+      }
+
+      function onSignIn(googleUser) {
+        var profile = googleUser.getBasicProfile();
+        
+        // Optional: Display user's name
+        const locEl = document.getElementById('visitor-location');
+        locEl.textContent = `Welcome, ${profile.getGivenName()}`;
+
+        // Hide the initial buttons and show the job results
+        document.getElementById('hunt-button-wrapper').classList.add('hidden');
+        document.getElementById('main-content-area').classList.remove('initial-state');
+        const jobResults = document.getElementById('job-results');
+        jobResults.classList.remove('hidden');
+        
+        // Ensure the default tab is displayed correctly
+        document.getElementById('GhostJobs').style.display = 'block';
+        document.getElementById('RealJobs').style.display = 'none';
+        
+        // Set the correct active tab
+        const tablinks = document.getElementsByClassName("tablinks");
+        if (tablinks.length > 0) {
+            tablinks[0].classList.add('active');
+        }
+        if (tablinks.length > 1) {
+            tablinks[1].classList.remove('active');
+        }
+      }
     </script>
 </body>
 </html>

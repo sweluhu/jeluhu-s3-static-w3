@@ -314,41 +314,57 @@
 
           const address = '0x82ab730e819f81b9044dd0f9a6383579fd91b95e';
           document.getElementById('opensea-link').href = `https://opensea.io/${address}`;
-          const url = `https://api.opensea.io/api/v2/chain/ethereum/account/${address}/nfts?limit=20`;
+          
+          gallery.innerHTML = '<p>Loading NFTs...</p>';
+          galleryImages = [];
+          let isFirstPage = true;
+          let nextCursor = '';
 
           try {
-            const response = await fetch(url, {
-              headers: { 'x-api-key': apiKey }
-            });
-            const data = await response.json();
-            
-            gallery.innerHTML = '';
-            galleryImages = [];
-
-            if (data.nfts) {
-              data.nfts.forEach(nft => {
-                const src = nft.image_url || nft.display_image_url || 'https://via.placeholder.com/250';
-                const img = document.createElement('img');
-                img.alt = nft.name;
-                img.loading = 'lazy';
-                img.decoding = 'async';
-                img.style.cursor = 'pointer';
-                img.onload = () => {
-                  const aspect = img.naturalWidth / img.naturalHeight;
-                  if (aspect > 1.2) img.style.gridColumn = 'span 2';
-                  else if (aspect < 0.8) img.style.gridRow = 'span 2';
-                };
-                img.src = src;
-
-                const index = galleryImages.length;
-                galleryImages.push(src);
-                img.addEventListener('click', () => openLightbox(index));
-
-                gallery.appendChild(img);
+            do {
+              const url = `https://api.opensea.io/api/v2/chain/ethereum/account/${address}/nfts?limit=50${nextCursor ? '&next=' + nextCursor : ''}`;
+              
+              const response = await fetch(url, {
+                headers: { 'x-api-key': apiKey }
               });
-            } else {
+              const data = await response.json();
+              
+              if (isFirstPage) {
+                gallery.innerHTML = '';
+                isFirstPage = false;
+              }
+
+              if (data.nfts && data.nfts.length > 0) {
+                data.nfts.forEach(nft => {
+                  const src = nft.image_url || nft.display_image_url || 'https://via.placeholder.com/250';
+                  const img = document.createElement('img');
+                  img.alt = nft.name;
+                  img.loading = 'lazy';
+                  img.decoding = 'async';
+                  img.style.cursor = 'pointer';
+                  img.onload = () => {
+                    const aspect = img.naturalWidth / img.naturalHeight;
+                    if (aspect > 1.2) img.style.gridColumn = 'span 2';
+                    else if (aspect < 0.8) img.style.gridRow = 'span 2';
+                  };
+                  img.src = src;
+
+                  const index = galleryImages.length;
+                  galleryImages.push(src);
+                  img.addEventListener('click', () => openLightbox(index));
+
+                  gallery.appendChild(img);
+                });
+              }
+              
+              nextCursor = data.next;
+
+            } while (nextCursor);
+
+            if (isFirstPage) {
               gallery.innerHTML = '<p>No NFTs found.</p>';
             }
+
           } catch (err) {
             console.error('Error fetching NFTs:', err);
             gallery.innerHTML = '<p style="color:red;">Failed to fetch NFTs.</p>';
